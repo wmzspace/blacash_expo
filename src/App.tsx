@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>TypeScript + React Native</Text>
+      <Text>TypeScript + React Native 2023</Text>
       <StatusBar style="auto" />
     </View>
   );
