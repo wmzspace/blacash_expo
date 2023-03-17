@@ -2,6 +2,7 @@
   "expo": {
     "name": "blacash_expo",
     "slug": "blacash_expo",
+    "owner": "alienit",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +22,22 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.AlienIT.blacash"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "db5fe3e7-22b5-4ade-8267-b16280ad1bec"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/db5fe3e7-22b5-4ade-8267-b16280ad1bec"
     }
   }
 }
