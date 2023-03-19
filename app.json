@@ -5,10 +5,10 @@
     "owner": "alienit",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/logo-dark/logo.png",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo-dark/logo_transparent.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
