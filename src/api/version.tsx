@@ -2,11 +2,7 @@ import {serverIPP} from '../values/strings';
 import {Alert, BackHandler, Linking, ToastAndroid} from 'react-native';
 const currentVersion = 'demo_1.2';
 
-import {NativeStackScreenProps} from 'react-native-screens/native-stack';
-import {RootStackParamList} from '../types';
-type Props = NativeStackScreenProps<RootStackParamList>;
-
-export const checkUpdate = ({navigation}: Props) => {
+export const checkUpdate = ({navigation}: any) => {
   // 43.143.213.226:8088
   fetch('http://' + serverIPP + '/checkUpdate', {
     //不能直接使用 wmzspace.space域名, 因为 域名开启了https防窜站

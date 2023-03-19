@@ -10,11 +10,13 @@ import styles from '../../styles';
 
 import {NativeStackScreenProps} from 'react-native-screens/native-stack';
 import {RootStackParamList} from '../types';
+import {checkUpdate} from 'src/api/version';
+
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen({navigation}: Props) {
   //TODO: 调用checkUpdate时ts报错
-  // checkUpdate({navigation});
+  checkUpdate({navigation});
 
   return (
     <PaperProvider>
