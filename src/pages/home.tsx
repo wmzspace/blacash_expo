@@ -1,18 +1,20 @@
 import * as React from 'react';
 import {View, Image} from 'react-native';
 import {Button} from 'react-native-paper';
-
-import Animated, {FadeIn, FadeInDown} from 'react-native-reanimated';
-
 import {Provider as PaperProvider} from 'react-native-paper';
-
+import Animated, {FadeIn, FadeInDown} from 'react-native-reanimated';
 const AnimatedView = Animated.createAnimatedComponent(View);
 
 import styles from '../../styles';
-import {checkUpdate} from '../api/version';
+// import {checkUpdate} from '../api/version';
 
-export default function HomeScreen({navigation}) {
-  checkUpdate({navigation});
+import {NativeStackScreenProps} from 'react-native-screens/native-stack';
+import {RootStackParamList} from '../types';
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+export default function HomeScreen({navigation}: Props) {
+  //TODO: 调用checkUpdate时ts报错
+  // checkUpdate({navigation});
 
   return (
     <PaperProvider>

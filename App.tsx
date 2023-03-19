@@ -6,7 +6,8 @@ import {Provider as PaperProvider} from 'react-native-paper';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 
-const Stack = createStackNavigator();
+import {RootStackParamList} from './src/types';
+const Stack = createStackNavigator<RootStackParamList>();
 
 import HomeScreen from './src/pages/home';
 import SignupScreen from './src/pages/signup';

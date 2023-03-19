@@ -1,8 +1,12 @@
-import {serverIPP} from '../../values/strings';
+import {serverIPP} from '../values/strings';
 import {Alert, BackHandler, Linking, ToastAndroid} from 'react-native';
 const currentVersion = 'demo_1.2';
 
-export const checkUpdate = ({navigation}) => {
+import {NativeStackScreenProps} from 'react-native-screens/native-stack';
+import {RootStackParamList} from '../types';
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+export const checkUpdate = ({navigation}: Props) => {
   // 43.143.213.226:8088
   fetch('http://' + serverIPP + '/checkUpdate', {
     //不能直接使用 wmzspace.space域名, 因为 域名开启了https防窜站
@@ -39,7 +43,9 @@ export const checkUpdate = ({navigation}) => {
               ]);
               Linking.openURL(
                 `https://wmzspace.space/yechat/yechat_${currentVersion}.apk`,
-              );
+              ).catch(e => {
+                console.log(e);
+              });
             } else {
               ToastAndroid.showWithGravity(
                 '当前为最新版本',
