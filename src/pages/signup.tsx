@@ -9,12 +9,12 @@ import {NativeStackScreenProps} from 'react-native-screens/native-stack';
 import {RootStackParamList} from '../types';
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
-export default function LoginScreen({navigation}: Props) {
+export default function SignupScreen({navigation}: Props) {
   return (
     <View style={[styles.container]}>
       <View style={styles.innerContainer}>
         <Text className="font-bold" style={{margin: 30, fontSize: 30}}>
-          Login Page
+          Signup Page
         </Text>
         <Button mode="contained" onPress={() => navigation.navigate('Home')}>
           返回

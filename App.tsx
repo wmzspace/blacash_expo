@@ -14,12 +14,14 @@ import SignupScreen from './src/pages/signup';
 import LoginScreen from './src/pages/login';
 // import MainScreen from './src/pages/main';
 
+import {StatusBar} from 'expo-status-bar';
 import styles from './styles';
 
 export default function App() {
   return (
     <>
       <GestureHandlerRootView style={styles.container}>
+        <StatusBar hidden={false} />
         <PaperProvider>
           <NavigationContainer>
             <Stack.Navigator initialRouteName="Home">
