@@ -1,4 +1,5 @@
 import * as React from 'react';
+// AIzaSyC0Kt8C0vMOGZ5QE4ZebY6Ku_RDqztKHBw
 import {
   StyleSheet,
   View,
@@ -23,25 +24,6 @@ import styles from '../../styles';
 import Geolocation from 'react-native-geolocation-service';
 import {serverIPP} from '../values/strings';
 import {PreferencesContext} from '../context/preference';
-
-// const radioButtonsData = [
-//   {
-//     id: 1, //主键是必须有的
-//     label: '是',
-//     value: true,
-//   },
-//   {
-//     id: 2,
-//     label: '否',
-//     value: false,
-//   },
-//   // {
-//   //   id: 3,
-//   //   label: '?',
-//   //   value: null,
-//   //   selected: true,
-//   // },
-// ];
 
 const style = StyleSheet.create({
   inputWrap: {
@@ -71,6 +53,7 @@ const style = StyleSheet.create({
 
 import {NativeStackScreenProps} from 'react-native-screens/native-stack';
 import {RootStackParamList} from '../types';
+import {StatusBar} from 'expo-status-bar';
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
 export default function SignupScreen({navigation}: Props) {
@@ -102,7 +85,6 @@ export default function SignupScreen({navigation}: Props) {
   const requestLocationPermission = async () => {
     if (Platform.OS === 'ios') {
       getOneTimeLocation();
-
       // subscribeLocationLocation();
     } else {
       try {
@@ -125,59 +107,58 @@ export default function SignupScreen({navigation}: Props) {
           setLocationStatus('权限被拒绝');
           Alert.alert('定位失败', '用户拒绝定位权限, 请尝试在设置中开启权限');
         }
-      } finally {
-        console.log('!!!');
+      } catch (err) {
+        console.warn('catch: ' + err);
       }
-      // catch (err) {
-      //   console.warn('catch: ' + err);
-      // }
     }
   };
 
   const getOneTimeLocation = () => {
     setLocationStatus('定位获取中 ...');
-
-    Geolocation.getCurrentPosition(
-      //Will give you the current location
-      position => {
-        //getting the Longitude from the location json
-        const currentLongitude_ = JSON.stringify(position.coords.longitude);
-
-        //getting the Latitude from the location json
-        const currentLatitude_ = JSON.stringify(position.coords.latitude);
-
-        setLocationStatus('点击左侧"位置"获取');
-
-        //Setting Longitude state
-        setCurrentLongitude(currentLongitude_);
-
-        //Setting Longitude state
-        setCurrentLatitude(currentLatitude_);
-        // console.log(`${currentLongitude},${currentLatitude}`)
-        geocoder(currentLongitude_, currentLatitude_);
-      },
-      error => {
-        if (error.message === 'No location provider available.') {
-          setLocationStatus('点击左侧"位置"刷新)');
-          Alert.alert('定位失败', '请检查GPS是否开启');
-        } else if (error.message === 'Location permission was not granted.') {
-          setLocationStatus('点击左侧"位置"刷新)');
-          Alert.alert('定位失败', '用户拒绝定位权限, 请尝试在设置中开启权限');
-        } else {
-          setLocationStatus(error.message);
-          Alert.alert('定位失败', error.message);
-        }
-        return 0;
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 30000,
-        maximumAge: 1000,
-      },
-    );
+    Geolocation.getCurrentPosition(pos => {
+      console.log(pos);
+    });
+    // Geolocation.getCurrentPosition(
+    //   //Will give you the current location
+    //   position => {
+    //     //getting the Longitude from the location json
+    //     const currentLongitude_ = JSON.stringify(position.coords.longitude);
+    //
+    //     //getting the Latitude from the location json
+    //     const currentLatitude_ = JSON.stringify(position.coords.latitude);
+    //
+    //     setLocationStatus('点击左侧"位置"获取');
+    //
+    //     //Setting Longitude state
+    //     setCurrentLongitude(currentLongitude_);
+    //
+    //     //Setting Longitude state
+    //     setCurrentLatitude(currentLatitude_);
+    //     // console.log(`${currentLongitude},${currentLatitude}`)
+    //     geocoder(currentLongitude_, currentLatitude_);
+    //   },
+    //   error => {
+    //     if (error.message === 'No location provider available.') {
+    //       setLocationStatus('点击左侧"位置"刷新)');
+    //       Alert.alert('定位失败', '请检查GPS是否开启');
+    //     } else if (error.message === 'Location permission was not granted.') {
+    //       setLocationStatus('点击左侧"位置"刷新)');
+    //       Alert.alert('定位失败', '用户拒绝定位权限, 请尝试在设置中开启权限');
+    //     } else {
+    //       setLocationStatus(error.message);
+    //       Alert.alert('定位失败', error.message);
+    //     }
+    //     return 0;
+    //   },
+    //   {
+    //     enableHighAccuracy: true,
+    //     timeout: 30000,
+    //     maximumAge: 1000,
+    //   },
+    // );
   };
 
-  const [formatted_address, setFormattedAddress] = React.useState('');
+  // const [formatted_address, setFormattedAddress] = React.useState('');
   const [province, setProvince] = React.useState('');
   const [city, setCity] = React.useState('');
   const [district, setDistrict] = React.useState('');
@@ -195,7 +176,7 @@ export default function SignupScreen({navigation}: Props) {
             console.log(responseData.regeocode.addressComponent.province);
             console.log(responseData.regeocode.addressComponent.city);
             console.log(responseData.regeocode.addressComponent.district);
-            setFormattedAddress(responseData.regeocode.formatted_address);
+            // setFormattedAddress(responseData.regeocode.formatted_address);
             setProvince(responseData.regeocode.addressComponent.province);
             setCity(responseData.regeocode.addressComponent.city);
             setDistrict(responseData.regeocode.addressComponent.district);
@@ -284,209 +265,212 @@ export default function SignupScreen({navigation}: Props) {
   const hideNotice = () => setNoticeVisible(false);
   const containerStyle = {backgroundColor: 'white', padding: 20};
   return (
-    <View
-      style={[
-        styles.container,
-        // useColorScheme() === 'dark'
-        //   ? styles.darkBackgroundColor
-        //   : styles.lightBackgroundColor,
-      ]}>
-      <Portal>
-        <Modal
-          // theme={theme}
-          visible={NoticeVisible}
-          onDismiss={hideNotice}
-          contentContainerStyle={containerStyle}>
-          <Text style={{color: '#181818'}}>{`
+    <>
+      <StatusBar />
+      <View
+        style={[
+          styles.container,
+          // useColorScheme() === 'dark'
+          //   ? styles.darkBackgroundColor
+          //   : styles.lightBackgroundColor,
+        ]}>
+        <Portal>
+          <Modal
+            // theme={theme}
+            visible={NoticeVisible}
+            onDismiss={hideNotice}
+            contentContainerStyle={containerStyle}>
+            <Text style={{color: '#181818'}}>{`
 声明：
 请接受本声明！
 `}</Text>
-        </Modal>
-      </Portal>
-      <View style={{alignItems: 'center'}}>
-        {/* <View style={{alignItems: 'center'}}> */}
-        <Text style={{marginTop: 60, marginBottom: 20, fontSize: 20}}>
-          BlaCash 账号注册
-        </Text>
-        <View>
-          <TextInput
-            style={style.textInput}
-            placeholder="用户名*"
-            placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
-            underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
-            clearButtonMode="always"
-            selectionColor="skyblue"
-            maxLength={19}
-            onChangeText={_userName => {
-              setUserName(_userName);
-              setUserNameValidation(_userName.length >= 6);
-              // dispatch({type: 'userName', userName: userName});
-            }}
-            left={<TextInput.Icon icon="account" />}
-          />
-          <HelperText
-            type="error"
-            style={{display: userNameIsValid || !userName ? 'none' : 'flex'}}>
-            用户名需至少6个字符
-          </HelperText>
-
-          <TextInput
-            style={style.textInput}
-            placeholder="密码*"
-            placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
-            underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
-            secureTextEntry={true}
-            clearButtonMode="always"
-            selectionColor="red"
-            maxLength={19}
-            onChangeText={_password => {
-              setPassword(_password);
-              setPasswordValidation(_password.length >= 6);
-              // dispatch({type: 'password', password: password});
-            }}
-            left={<TextInput.Icon icon="lock" />}
-          />
-          <HelperText
-            type="error"
-            style={{display: passwordIsValid || !password ? 'none' : 'flex'}}>
-            密码需至少6个字符
-          </HelperText>
-
-          <TextInput
-            style={style.textInput}
-            placeholder="邮箱*"
-            placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
-            underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
-            clearButtonMode="always"
-            maxLength={30}
-            onChangeText={email_ => {
-              setEmail(email_);
-            }}
-            left={<TextInput.Icon icon="email" />}
-          />
-          <HelperText
-            type="error"
-            style={{
-              display:
-                email && !(email.includes('@') && email.includes('.'))
-                  ? 'flex'
-                  : 'none',
-            }}>
-            邮箱格式不正确
-          </HelperText>
-
-          {/*</View>*/}
-          <View style={style.inputWrap}>
-            <Text onPress={requestLocationPermission}>位置: </Text>
-            <TextInput
-              style={style.textInput}
-              placeholder={locationStatus}
-              placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
-              // underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
-              value={province ? province + ' ' + city + ' ' + district : ''}
-              clearButtonMode="always"
-              maxLength={100}
-              onChangeText={_location => {
-                setLocation(_location);
-              }}
-            />
-          </View>
-
-          <View style={style.inputWrap}>
-            <Text>钱包地址: </Text>
-            <TextInput
-              style={style.textInput}
-              placeholder="必填*"
-              placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
-              // value={province ? province + ' ' + city + ' ' + district : ''}
-              clearButtonMode="always"
-              maxLength={100}
-              onChangeText={_address => {
-                setAddress(_address);
-              }}
-            />
-          </View>
-          {/* TODO: 阅读声明的超链接*/}
-          <View style={style.inputWrap}>
-            <Text>
-              <Text style={{color: 'blue'}} onPress={showNotice}>
-                阅读声明
-              </Text>
-              并接受:{' '}
-            </Text>
-            {/*<RadioGroup*/}
-            {/*  radioButtons={radioButtons}*/}
-            {/*  onPress={onPressRadioButton}*/}
-            {/*  containerStyle={{width: 40}}*/}
-            {/*  layout="row"*/}
-            {/*/>*/}
-            <RadioButton.Group
-              onValueChange={newValue => {
-                setReadNotice(newValue);
-              }}
-              value={readNotice}>
-              <View style={[styles.inlineFlex]}>
-                <View style={[styles.inlineFlex]}>
-                  <Text style={{paddingTop: 7, color: 'gray'}}>是</Text>
-                  <RadioButton value="yes" />
-                </View>
-                <View style={styles.inlineFlex}>
-                  <Text style={{paddingTop: 7, color: 'gray'}}>否</Text>
-                  <RadioButton value="no" />
-                </View>
-              </View>
-            </RadioButton.Group>
-          </View>
-          {/*<Text*/}
-          {/*  style={{*/}
-          {/*    alignContent: 'flex-start',*/}
-          {/*    color: 'red',*/}
-          {/*    marginBottom: 10,*/}
-          {/*    display:*/}
-          {/*      (userNameIsValid && passwordIsValid) ||*/}
-          {/*      !(userName.length * password.length)*/}
-          {/*        ? 'none'*/}
-          {/*        : 'flex',*/}
-          {/*  }}>*/}
-          {/*  用户名和密码需至少6个字符*/}
-          {/*</Text>*/}
-          <Text style={{alignContent: 'flex-start'}}>
-            已有账号？
-            <Text
-              style={{color: 'blue', textDecorationLine: 'underline'}}
-              onPress={() => {
-                navigation.navigate('Login');
-              }}>
-              立即登录
-            </Text>
+          </Modal>
+        </Portal>
+        <View style={{alignItems: 'center'}}>
+          {/* <View style={{alignItems: 'center'}}> */}
+          <Text style={{marginTop: 60, marginBottom: 20, fontSize: 20}}>
+            BlaCash 账号注册
           </Text>
-        </View>
+          <View>
+            <TextInput
+              style={style.textInput}
+              placeholder="用户名*"
+              placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
+              underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
+              clearButtonMode="always"
+              selectionColor="skyblue"
+              maxLength={19}
+              onChangeText={_userName => {
+                setUserName(_userName);
+                setUserNameValidation(_userName.length >= 6);
+                // dispatch({type: 'userName', userName: userName});
+              }}
+              left={<TextInput.Icon icon="account" />}
+            />
+            <HelperText
+              type="error"
+              style={{display: userNameIsValid || !userName ? 'none' : 'flex'}}>
+              用户名需至少6个字符
+            </HelperText>
 
-        <TouchableHighlight
-          // onPress={() => navigation.navigate('Home')}
-          onPress={sendAjax}
-          disabled={
-            !(
+            <TextInput
+              style={style.textInput}
+              placeholder="密码*"
+              placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
+              underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
+              secureTextEntry={true}
+              clearButtonMode="always"
+              selectionColor="red"
+              maxLength={19}
+              onChangeText={_password => {
+                setPassword(_password);
+                setPasswordValidation(_password.length >= 6);
+                // dispatch({type: 'password', password: password});
+              }}
+              left={<TextInput.Icon icon="lock" />}
+            />
+            <HelperText
+              type="error"
+              style={{display: passwordIsValid || !password ? 'none' : 'flex'}}>
+              密码需至少6个字符
+            </HelperText>
+
+            <TextInput
+              style={style.textInput}
+              placeholder="邮箱*"
+              placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
+              underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
+              clearButtonMode="always"
+              maxLength={30}
+              onChangeText={email_ => {
+                setEmail(email_);
+              }}
+              left={<TextInput.Icon icon="email" />}
+            />
+            <HelperText
+              type="error"
+              style={{
+                display:
+                  email && !(email.includes('@') && email.includes('.'))
+                    ? 'flex'
+                    : 'none',
+              }}>
+              邮箱格式不正确
+            </HelperText>
+
+            {/*</View>*/}
+            <View style={style.inputWrap}>
+              <Text onPress={requestLocationPermission}>位置: </Text>
+              <TextInput
+                style={style.textInput}
+                placeholder={locationStatus}
+                placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
+                // underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
+                value={province ? province + ' ' + city + ' ' + district : ''}
+                clearButtonMode="always"
+                maxLength={100}
+                onChangeText={_location => {
+                  setLocation(_location);
+                }}
+              />
+            </View>
+
+            <View style={style.inputWrap}>
+              <Text>钱包地址: </Text>
+              <TextInput
+                style={style.textInput}
+                placeholder="必填*"
+                placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
+                // value={province ? province + ' ' + city + ' ' + district : ''}
+                clearButtonMode="always"
+                maxLength={100}
+                onChangeText={_address => {
+                  setAddress(_address);
+                }}
+              />
+            </View>
+            {/* TODO: 阅读声明的超链接*/}
+            <View style={style.inputWrap}>
+              <Text>
+                <Text style={{color: 'blue'}} onPress={showNotice}>
+                  阅读声明
+                </Text>
+                并接受:{' '}
+              </Text>
+              {/*<RadioGroup*/}
+              {/*  radioButtons={radioButtons}*/}
+              {/*  onPress={onPressRadioButton}*/}
+              {/*  containerStyle={{width: 40}}*/}
+              {/*  layout="row"*/}
+              {/*/>*/}
+              <RadioButton.Group
+                onValueChange={newValue => {
+                  setReadNotice(newValue);
+                }}
+                value={readNotice}>
+                <View style={[styles.inlineFlex]}>
+                  <View style={[styles.inlineFlex]}>
+                    <Text style={{paddingTop: 7, color: 'gray'}}>是</Text>
+                    <RadioButton value="yes" />
+                  </View>
+                  <View style={styles.inlineFlex}>
+                    <Text style={{paddingTop: 7, color: 'gray'}}>否</Text>
+                    <RadioButton value="no" />
+                  </View>
+                </View>
+              </RadioButton.Group>
+            </View>
+            {/*<Text*/}
+            {/*  style={{*/}
+            {/*    alignContent: 'flex-start',*/}
+            {/*    color: 'red',*/}
+            {/*    marginBottom: 10,*/}
+            {/*    display:*/}
+            {/*      (userNameIsValid && passwordIsValid) ||*/}
+            {/*      !(userName.length * password.length)*/}
+            {/*        ? 'none'*/}
+            {/*        : 'flex',*/}
+            {/*  }}>*/}
+            {/*  用户名和密码需至少6个字符*/}
+            {/*</Text>*/}
+            <Text style={{alignContent: 'flex-start'}}>
+              已有账号？
+              <Text
+                style={{color: 'blue', textDecorationLine: 'underline'}}
+                onPress={() => {
+                  navigation.navigate('Login');
+                }}>
+                立即登录
+              </Text>
+            </Text>
+          </View>
+
+          <TouchableHighlight
+            // onPress={() => navigation.navigate('Home')}
+            onPress={sendAjax}
+            disabled={
+              !(
+                userNameIsValid &&
+                passwordIsValid &&
+                address &&
+                email &&
+                readNotice
+              )
+            }
+            style={
               userNameIsValid &&
               passwordIsValid &&
               address &&
-              email &&
-              readNotice
-            )
-          }
-          style={
-            userNameIsValid &&
-            passwordIsValid &&
-            address &&
-            email.includes('@') &&
-            email.includes('.') &&
-            readNotice === 'yes'
-              ? [styles.button, {backgroundColor: 'blue'}]
-              : styles.disabledButton
-          }>
-          <Text style={{color: '#f5fcfa', fontSize: 16}}>注册</Text>
-        </TouchableHighlight>
+              email.includes('@') &&
+              email.includes('.') &&
+              readNotice === 'yes'
+                ? [styles.button, {backgroundColor: 'blue'}]
+                : styles.disabledButton
+            }>
+            <Text style={{color: '#f5fcfa', fontSize: 16}}>注册</Text>
+          </TouchableHighlight>
+        </View>
       </View>
-    </View>
+    </>
   );
 }

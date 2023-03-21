@@ -4,7 +4,10 @@ export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   Signup: undefined;
-  Main: any;
+  // Main: any;
+  Main: {
+    email: string;
+  };
   NotFound: undefined;
 };
 

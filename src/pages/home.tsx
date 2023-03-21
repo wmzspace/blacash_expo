@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {View, Image} from 'react-native';
-import {Button} from 'react-native-paper';
-import {Provider as PaperProvider} from 'react-native-paper';
+import {Button, useTheme} from 'react-native-paper';
 import Animated, {FadeIn, FadeInDown} from 'react-native-reanimated';
 const AnimatedView = Animated.createAnimatedComponent(View);
 
@@ -10,13 +9,18 @@ import {checkUpdate} from '../api/version';
 
 import {NativeStackScreenProps} from 'react-native-screens/native-stack';
 import {RootStackParamList} from '../types';
+import {StatusBar} from 'expo-status-bar';
+import {PreferencesContext} from '../context/preference';
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen({navigation}: Props) {
+  const theme = useTheme();
+  const {toggleTheme, isThemeDark} = React.useContext(PreferencesContext);
   checkUpdate({navigation});
 
   return (
-    <PaperProvider>
+    <>
+      <StatusBar />
       <View style={[styles.container]}>
         <AnimatedView entering={FadeIn.delay(500)} style={{flex: 1}}>
           <Image
@@ -47,12 +51,17 @@ export default function HomeScreen({navigation}: Props) {
             </Button>
             <Button
               mode="contained-tonal"
-              buttonColor={'#fcfcfc'}
-              style={[styles.button2]}
+              // buttonColor=
+              style={[
+                styles.button2,
+                isThemeDark
+                  ? styles.darkBackgroundColor
+                  : styles.lightBackgroundColor,
+              ]}
               labelStyle={{
                 paddingHorizontal: 10,
                 fontSize: 16,
-                color: 'black',
+                // color: 'black',
               }}
               onPress={() => {
                 navigation.navigate('Signup');
@@ -62,6 +71,6 @@ export default function HomeScreen({navigation}: Props) {
           </AnimatedView>
         </AnimatedView>
       </View>
-    </PaperProvider>
+    </>
   );
 }
