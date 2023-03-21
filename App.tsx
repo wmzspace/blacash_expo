@@ -22,7 +22,7 @@ export default function App() {
           <NavigationContainer>
             <Stack.Navigator initialRouteName="Home">
               {routes.map((route: any, i: number) => (
-                <Stack.Screen key={i} name={route.name} component={route.component} options={{ headerShown: false }} />
+                <Stack.Screen key={i} name={route.name} component={route.component} options={{ headerShown: route.headerShown }} />
               ))}
 
               {/*TODO: Add Stack.Screen when adding pages*/}

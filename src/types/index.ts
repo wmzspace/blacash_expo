@@ -10,3 +10,9 @@ declare global {
     interface RootParamList extends RootStackParamList {}
   }
 }
+
+export type ScreenRoute = {
+  name: string
+  component: any
+  headerShown?: boolean
+}
