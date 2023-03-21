@@ -9,7 +9,7 @@ import {RootStackParamList} from './src/types';
 import {StatusBar} from 'expo-status-bar';
 import styles from './styles';
 
-import routes from './src/config/routes'
+import routes from './src/config/routes';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -22,10 +22,13 @@ export default function App() {
           <NavigationContainer>
             <Stack.Navigator initialRouteName="Home">
               {routes.map((route: any, i: number) => (
-                <Stack.Screen key={i} name={route.name} component={route.component} options={{ headerShown: route.headerShown }} />
+                <Stack.Screen
+                  key={i}
+                  name={route.name}
+                  component={route.component}
+                  options={route.options}
+                />
               ))}
-
-              {/*TODO: Add Stack.Screen when adding pages*/}
             </Stack.Navigator>
           </NavigationContainer>
         </PaperProvider>

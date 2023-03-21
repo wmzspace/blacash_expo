@@ -6,11 +6,10 @@ import Animated, {FadeIn, FadeInDown} from 'react-native-reanimated';
 const AnimatedView = Animated.createAnimatedComponent(View);
 
 import styles from '../../styles';
+import {checkUpdate} from '../api/version';
 
 import {NativeStackScreenProps} from 'react-native-screens/native-stack';
 import {RootStackParamList} from '../types';
-import {checkUpdate} from '../api/version';
-
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen({navigation}: Props) {
