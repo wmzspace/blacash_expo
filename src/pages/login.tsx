@@ -247,7 +247,6 @@ export default function LoginScreen({navigation}: Props) {
             //   .catch(e => {
             //     console.log(e.message);
             //   });
-            //TODO:TS Error
             navigation.navigate('Main', {
               email: userName,
             });
