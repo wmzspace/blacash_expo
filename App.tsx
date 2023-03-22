@@ -4,7 +4,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PreferencesContext } from './src/context/preference';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 import styles from './styles';
 
 import { RootStackParamList } from './src/types';
@@ -32,8 +31,9 @@ const CombinedDarkMD2Theme = merge(MD2DarkTheme, NavigationDarkTheme);
 
 // ==============
 // ==============
-
 import { RootStackScreen } from './src/screens';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+
 
 export default function App() {
   const [isThemeDark, setIsThemeDark] = React.useState(false);

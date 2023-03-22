@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
 const { height } = Dimensions.get('screen');
-const logoHeight = height * 0.28;
+const logoHeight = height * 0.38;
 
 export const SplashScreenStyles = StyleSheet.create({
   container: {
@@ -24,7 +24,7 @@ export const SplashScreenStyles = StyleSheet.create({
   logo: {
     width: logoHeight,
     height: logoHeight,
-    borderRadius: 100
+    borderRadius: 150
   },
   title: {
     color: '#05375a',
