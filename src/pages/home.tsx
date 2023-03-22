@@ -34,6 +34,7 @@ export default function HomeScreen({ navigation }: Props) {
             fontWeight: 'bold',
             fontSize: 25,
             color: '#1C1B1F',
+            fontFamily: 'monospace'
           }}>
           Welcome 👋
         </Text>
@@ -62,6 +63,7 @@ export default function HomeScreen({ navigation }: Props) {
                 fontSize: 16,
                 color: '#FFFFFF',
                 letterSpacing: 2,
+                fontFamily: 'monospace'
               }}
               onPress={() => {
                 setIsLoginBtnLoading(true)
@@ -88,6 +90,7 @@ export default function HomeScreen({ navigation }: Props) {
                 fontSize: 16,
                 color: '#FFFFFF',
                 letterSpacing: 2,
+                fontFamily: 'monospace'
               }}
               onPress={() => {
                 setIsSignupBtnLoading(true)
