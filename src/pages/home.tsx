@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { View, Image, Text } from 'react-native';
 import { Button, useTheme } from 'react-native-paper';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
@@ -19,11 +19,22 @@ export default function HomeScreen({ navigation }: Props) {
   // const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
   checkUpdate({ navigation });
 
+  const [isSignupBtnLoading, setIsSignupBtnLoading] = useState<boolean>(false)
+  const [isLoginBtnLoading, setIsLoginBtnLoading] = useState<boolean>(false)
+
   return (
     <>
       <StatusBar />
-      <View style={{...styles.container, backgroundColor: '#FFFBFE'}}>
-        <Text style={{ flex: 1, textAlign: 'center', textAlignVertical: 'center', fontWeight: 'bold', fontSize: 25, color: '#1C1B1F' }}>
+      <View style={{ ...styles.container, backgroundColor: '#FFFBFE' }}>
+        <Text
+          style={{
+            flex: 1,
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            fontWeight: 'bold',
+            fontSize: 25,
+            color: '#1C1B1F',
+          }}>
           Welcome 👋
         </Text>
         <AnimatedView entering={FadeIn.delay(500)} style={{ flex: 8 }}>
@@ -40,10 +51,11 @@ export default function HomeScreen({ navigation }: Props) {
           </View>
           <AnimatedView
             entering={FadeInDown.duration(1000).delay(2000)}
-            style={{...styles.inlineFlex, justifyContent: 'space-around'}}>
+            style={{ ...styles.inlineFlex, justifyContent: 'space-around' }}>
             <Button
               mode="contained-tonal"
               buttonColor={'#B58392'}
+              loading={isLoginBtnLoading}
               style={styles.button2}
               labelStyle={{
                 paddingHorizontal: 10,
@@ -52,13 +64,18 @@ export default function HomeScreen({ navigation }: Props) {
                 letterSpacing: 2,
               }}
               onPress={() => {
-                navigation.navigate('Login');
+                setIsLoginBtnLoading(true)
+                setTimeout(() => {
+                  navigation.navigate('Login');
+                  setIsLoginBtnLoading(false)
+                }, 500)                
               }}>
               登陆
             </Button>
             <Button
               mode="contained-tonal"
               buttonColor={'#B58392'}
+              loading={isSignupBtnLoading}
               style={{
                 ...styles.button2,
                 // backGround
@@ -73,7 +90,11 @@ export default function HomeScreen({ navigation }: Props) {
                 letterSpacing: 2,
               }}
               onPress={() => {
-                navigation.navigate('Signup');
+                setIsSignupBtnLoading(true)
+                setTimeout(() => {
+                  navigation.navigate('Signup');
+                  setIsSignupBtnLoading(false)
+                }, 500)                
               }}>
               注册
             </Button>
