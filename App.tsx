@@ -30,6 +30,11 @@ const CombinedDarkTheme = merge(MD3DarkTheme, NavigationDarkTheme);
 const CombinedDefaultMD2Theme = merge(MD2LightTheme, NavigationDefaultTheme);
 const CombinedDarkMD2Theme = merge(MD2DarkTheme, NavigationDarkTheme);
 
+// ==============
+// ==============
+
+import { RootStackScreen } from './src/screens';
+
 export default function App() {
   const [isThemeDark, setIsThemeDark] = React.useState(false);
   const [isMD2Theme, setIsMD2Theme] = React.useState(false);
@@ -67,7 +72,8 @@ export default function App() {
         <PreferencesContext.Provider value={preferences}>
           <PaperProvider theme={theme}>
             <NavigationContainer theme={theme}>
-              <Stack.Navigator initialRouteName="Home">
+              <RootStackScreen />
+              {/* <Stack.Navigator initialRouteName="Home">
                 {routes.map((route: any, i: number) => (
                   <Stack.Screen
                     key={i}
@@ -75,8 +81,9 @@ export default function App() {
                     component={route.component}
                     options={route.options}
                   />
-                ))}
-              </Stack.Navigator>
+                ))} 
+
+              </Stack.Navigator> */}
             </NavigationContainer>
           </PaperProvider>
         </PreferencesContext.Provider>

@@ -1,4 +1,4 @@
-import {ScreenRoute} from 'src/types';
+import { ScreenRoute } from 'src/types';
 import HomeScreen from '../pages/home';
 import LoginScreen from '../pages/login';
 import SignupScreen from '../pages/signup';
