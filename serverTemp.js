@@ -279,11 +279,11 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage});
 const imgBaseUrl = '..';
 
-app.post('/imgUrl', upload.single('files'), function (req, res, next) {
+app.patch('/imgUrl', upload.single('files'), function (req, res, next) {
   // console.log('------------------------------');
   // console.log('start!!!');
   let files = req.file;
-  console.log('Uploading file:' + files);
+  console.log('Uploading file: ' + files.originalname);
   // let id = req.body.id;
   let relativeDir = files.path.replace(/\\/g, '/');
   let rootDir = 'https://wmzspace.space/blacash/';
