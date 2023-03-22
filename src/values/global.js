@@ -10,4 +10,7 @@ export const userInfo = {
   email: '',
   name: '',
   ownedNfts: [],
+  location: '',
+  coin: 0,
+  address: '',
 };
