@@ -1,13 +1,13 @@
 import * as React from 'react';
 import 'react-native-gesture-handler';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {PreferencesContext} from './src/context/preference';
-import {Provider as PaperProvider} from 'react-native-paper';
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { PreferencesContext } from './src/context/preference';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 import styles from './styles';
 
-import {RootStackParamList} from './src/types';
+import { RootStackParamList } from './src/types';
 import routes from './src/config/routes';
 const Stack = createStackNavigator<RootStackParamList>();
 
