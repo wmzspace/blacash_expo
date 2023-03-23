@@ -1,13 +1,12 @@
 import * as React from 'react';
 import 'react-native-gesture-handler';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {PreferencesContext} from './src/context/preference';
-import {Provider as PaperProvider} from 'react-native-paper';
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { PreferencesContext } from './src/context/preference';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { createStackNavigator } from '@react-navigation/stack';
 import styles from './styles';
 
-import {RootStackParamList} from './src/types';
+import { RootStackParamList } from './src/types';
 import routes from './src/config/routes';
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -29,6 +28,11 @@ const CombinedDefaultTheme = merge(MD3LightTheme, NavigationDefaultTheme);
 const CombinedDarkTheme = merge(MD3DarkTheme, NavigationDarkTheme);
 const CombinedDefaultMD2Theme = merge(MD2LightTheme, NavigationDefaultTheme);
 const CombinedDarkMD2Theme = merge(MD2DarkTheme, NavigationDarkTheme);
+
+// ==============
+// ==============
+import RootStackScreen from './src/screens/RootStackScreen';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
 export default function App() {
   const [isThemeDark, setIsThemeDark] = React.useState(false);
@@ -67,7 +71,8 @@ export default function App() {
         <PreferencesContext.Provider value={preferences}>
           <PaperProvider theme={theme}>
             <NavigationContainer theme={theme}>
-              <Stack.Navigator initialRouteName="Home">
+              <RootStackScreen />
+              {/* <Stack.Navigator initialRouteName="Home">
                 {routes.map((route: any, i: number) => (
                   <Stack.Screen
                     key={i}
@@ -75,8 +80,9 @@ export default function App() {
                     component={route.component}
                     options={route.options}
                   />
-                ))}
-              </Stack.Navigator>
+                ))} 
+
+              </Stack.Navigator> */}
             </NavigationContainer>
           </PaperProvider>
         </PreferencesContext.Provider>
