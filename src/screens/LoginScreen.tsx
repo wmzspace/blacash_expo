@@ -5,6 +5,7 @@ import {
   TextInput,
   StatusBar,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { LoginScreenStyles } from '../styles/LoginScreenStyles';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -91,6 +92,8 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
     });
   };
 
+  const keyboardVerticalOffset = 60;
+
   return (
     <View style={LoginScreenStyles.container}>
       <StatusBar backgroundColor="#625B71" barStyle="light-content" />
@@ -100,85 +103,91 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
       <AnimatedView
         style={LoginScreenStyles.footer}
         entering={FadeInDown.duration(500)}>
-        <Text style={LoginScreenStyles.text_footer}>邮箱:</Text>
-        <View style={LoginScreenStyles.action}>
-          <FontAwesome name="user-o" color="#333" size={20} />
-          <TextInput
-            placeholder="Email..."
-            style={LoginScreenStyles.textInput}
-            autoCapitalize="none"
-            onChangeText={val => handleEmailInputChange(val)}
-            onEndEditing={e => handleValidateUser(e.nativeEvent.text)}
-          />
-          {formData.checkEmailInputChange ? (
-            <AnimatedView entering={BounceIn.duration(500)}>
-              <Feather name="check-circle" color="green" size={20} />
-            </AnimatedView>
-          ) : null}
-        </View>
-        {formData.isValidUser ? null : (
-          <AnimatedView entering={FadeInLeft.duration(200)}>
-            <Text style={LoginScreenStyles.errorMsg}>用户名最短要2个字符</Text>
-          </AnimatedView>
-        )}
-        <Text style={{ ...LoginScreenStyles.text_footer, marginTop: 25 }}>
-          密码:
-        </Text>
-        <View style={LoginScreenStyles.action}>
-          <Feather name="lock" color="#333" size={20} />
-          <TextInput
-            placeholder="Password..."
-            style={LoginScreenStyles.textInput}
-            autoCapitalize="none"
-            secureTextEntry={formData.secureTextEntry ? true : false}
-            onChangeText={val => handlePasswordChange(val)}
-          />
-          <TouchableOpacity onPress={handleSecureTextEntryChange}>
-            {formData.secureTextEntry ? (
-              <Feather name="eye-off" color="grey" size={20} />
-            ) : (
-              <Feather name="eye" color="grey" size={20} />
-            )}
-          </TouchableOpacity>
-        </View>
-        {formData.isValidPassword ? null : (
-          <AnimatedView entering={FadeInLeft.duration(200)}>
-            <Text style={LoginScreenStyles.errorMsg}>密码最短要6个字符</Text>
-          </AnimatedView>
-        )}
-        <View style={LoginScreenStyles.button}>
-          <TouchableOpacity
-            style={LoginScreenStyles.signIn}
-            onPress={() => {}}>
-            <LinearGradient
-              colors={['#625B71', '#7D5260']}
-              style={LoginScreenStyles.signIn}>
-              <Text style={{ ...LoginScreenStyles.textSign, color: '#fff' }}>
-                登陆
+        <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={keyboardVerticalOffset}>
+          <Text style={LoginScreenStyles.text_footer}>邮箱:</Text>
+          <View style={LoginScreenStyles.action}>
+            <FontAwesome name="user-o" color="#333" size={20} />
+            <TextInput
+              placeholder="Email..."
+              style={LoginScreenStyles.textInput}
+              autoCapitalize="none"
+              onChangeText={val => handleEmailInputChange(val)}
+              onEndEditing={e => handleValidateUser(e.nativeEvent.text)}
+            />
+            {formData.checkEmailInputChange ? (
+              <AnimatedView entering={BounceIn.duration(500)}>
+                <Feather name="check-circle" color="green" size={20} />
+              </AnimatedView>
+            ) : null}
+          </View>
+          {formData.isValidUser ? null : (
+            <AnimatedView entering={FadeInLeft.duration(200)}>
+              <Text style={LoginScreenStyles.errorMsg}>
+                用户名最短要2个字符
               </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SignupScreen')}
-            style={[
-              LoginScreenStyles.signIn,
-              {
-                borderColor: '#625B71',
-                borderWidth: 1,
-                marginTop: 15,
-              },
-            ]}>
-            <Text
+            </AnimatedView>
+          )}
+          <Text style={{ ...LoginScreenStyles.text_footer, marginTop: 25 }}>
+            密码:
+          </Text>
+          <View style={LoginScreenStyles.action}>
+            <Feather name="lock" color="#333" size={20} />
+            <TextInput
+              placeholder="Password..."
+              style={LoginScreenStyles.textInput}
+              autoCapitalize="none"
+              secureTextEntry={formData.secureTextEntry ? true : false}
+              onChangeText={val => handlePasswordChange(val)}
+            />
+            <TouchableOpacity onPress={handleSecureTextEntryChange}>
+              {formData.secureTextEntry ? (
+                <Feather name="eye-off" color="grey" size={20} />
+              ) : (
+                <Feather name="eye" color="grey" size={20} />
+              )}
+            </TouchableOpacity>
+          </View>
+          {formData.isValidPassword ? null : (
+            <AnimatedView entering={FadeInLeft.duration(200)}>
+              <Text style={LoginScreenStyles.errorMsg}>密码最短要6个字符</Text>
+            </AnimatedView>
+          )}
+          <View style={LoginScreenStyles.button}>
+            <TouchableOpacity
+              style={LoginScreenStyles.signIn}
+              onPress={() => {}}>
+              <LinearGradient
+                colors={['#625B71', '#7D5260']}
+                style={LoginScreenStyles.signIn}>
+                <Text style={{ ...LoginScreenStyles.textSign, color: '#fff' }}>
+                  登陆
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SignupScreen')}
               style={[
-                LoginScreenStyles.textSign,
+                LoginScreenStyles.signIn,
                 {
-                  color: '#625B71',
+                  borderColor: '#625B71',
+                  borderWidth: 1,
+                  marginTop: 15,
                 },
               ]}>
-              注册
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <Text
+                style={[
+                  LoginScreenStyles.textSign,
+                  {
+                    color: '#625B71',
+                  },
+                ]}>
+                注册
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
       </AnimatedView>
     </View>
   );
