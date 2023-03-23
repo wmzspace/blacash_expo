@@ -175,7 +175,7 @@ const SignUpScreen: React.FunctionComponent<ISignUpScreenProps> = ({
             钱包地址:
           </Text>
           <View style={LoginScreenStyles.action}>
-            <Feather name="lock" color="#333" size={20} />
+            <Feather name="dollar-sign" color="#333" size={20} />
             <TextInput
               placeholder="Wallet address..."
               style={LoginScreenStyles.textInput}
