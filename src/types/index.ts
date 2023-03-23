@@ -37,3 +37,13 @@ export type ScreenRoute2 = {
   options?: BottomTabNavigationOptions;
   // headerShown?: boolean;
 };
+
+
+export type LoginFormData = {
+  username: string
+  password: string
+  checkTextInputChange: boolean
+  secureTextEntry: boolean
+  isValidUser: boolean
+  isValidPassword: boolean
+}

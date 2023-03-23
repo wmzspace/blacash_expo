@@ -10,18 +10,26 @@ import { LoginScreenStyles } from '../styles/LoginScreenStyles';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import Animated, {
+  BounceIn,
+  FadeInDown,
+  FadeInLeft,
+} from 'react-native-reanimated';
+import { LoginFormData } from '../types';
 
 export interface ILoginScreenProps {
   navigation: any;
 }
 
+const AnimatedView = Animated.createAnimatedComponent(View);
+
 const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
   navigation,
 }) => {
-  const [data, setData] = React.useState({
+  const [formData, setFormData] = React.useState<LoginFormData>({
     username: '',
     password: '',
-    check_textInputChange: false,
+    checkTextInputChange: false,
     secureTextEntry: true,
     isValidUser: true,
     isValidPassword: true,
@@ -33,7 +41,9 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
       <View style={LoginScreenStyles.header}>
         <Text style={LoginScreenStyles.text_header}>Welcome back! 😊</Text>
       </View>
-      <View style={LoginScreenStyles.footer}>
+      <AnimatedView
+        style={LoginScreenStyles.footer}
+        entering={FadeInDown.duration(500)}>
         <Text style={LoginScreenStyles.text_footer}>邮箱:</Text>
         <View style={LoginScreenStyles.action}>
           <FontAwesome name="user-o" color="#333" size={20} />
@@ -42,6 +52,7 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
             style={LoginScreenStyles.textInput}
             autoCapitalize="none"
           />
+
           <Feather name="check-circle" color="green" size={20} />
         </View>
         <Text style={{ ...LoginScreenStyles.text_footer, marginTop: 25 }}>
@@ -54,8 +65,19 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
             style={LoginScreenStyles.textInput}
             autoCapitalize="none"
           />
-          <Feather name="check-circle" color="green" size={20} />
+          <TouchableOpacity onPress={() => {}}>
+            {formData.secureTextEntry ? (
+              <Feather name="eye-off" color="grey" size={20} />
+            ) : (
+              <Feather name="eye" color="grey" size={20} />
+            )}
+          </TouchableOpacity>
         </View>
+        {formData.isValidPassword ? null : (
+          <AnimatedView entering={FadeInLeft.duration(100)}>
+            <Text>Password must be 6 characters long</Text>
+          </AnimatedView>
+        )}
         <View style={LoginScreenStyles.button}>
           <TouchableOpacity style={LoginScreenStyles.signIn} onPress={() => {}}>
             <LinearGradient
@@ -67,7 +89,7 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
             </LinearGradient>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate('SignUpScreen')}
+            onPress={() => navigation.navigate('SignupScreen')}
             style={[
               LoginScreenStyles.signIn,
               {
@@ -87,7 +109,7 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </AnimatedView>
     </View>
   );
 };
