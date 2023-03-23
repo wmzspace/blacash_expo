@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {View, Alert, Image, Text, StyleSheet, ToastAndroid} from 'react-native';
 import {Button} from 'react-native-paper';
 import * as FileSystem from 'expo-file-system';
@@ -209,17 +210,17 @@ export default function UploadScreen() {
     setPickedImage(image.assets);
   }
 
-  let imagePreview = <Text style={styles.previewText}>未选择图片</Text>;
+  let imagePreview = <Text style={style.previewText}>未选择图片</Text>;
 
   if (pickedImage) {
     imagePreview = (
-      <Image source={{uri: pickedImage[0].uri}} style={styles.imageStyle} />
+      <Image source={{uri: pickedImage[0].uri}} style={style.imageStyle} />
     );
   }
 
   return (
     <View>
-      <View style={styles.imagePreviewContainer}>{imagePreview}</View>
+      <View style={style.imagePreviewContainer}>{imagePreview}</View>
       <Button onPress={cameraPressHandler}>从相机拍摄</Button>
       <Button onPress={pickImage}>从相册选择</Button>
       <Button onPress={uploadImage}>完整上传流程</Button>
@@ -240,18 +241,11 @@ export default function UploadScreen() {
         上传至服务器
       </Button>
       <Button onPress={clearCache}>清除缓存相册</Button>
-
-      {/*<Image*/}
-      {/*  source={{*/}
-      {/*    uri: 'file:///data/user/0/host.exp.exponent/files/ExperienceData/%2540alienit%252Fblacash_expo/small.mp4',*/}
-      {/*  }}*/}
-      {/*  style={styles.imageStyle}*/}
-      {/*/>*/}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   imagePreviewContainer: {
     alignItems: 'center',
     justifyContent: 'center',
