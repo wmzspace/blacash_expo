@@ -39,10 +39,12 @@ export type ScreenRoute2 = {
 };
 
 
-export type LoginFormData = {
+export type FormData = {
   username: string
   password: string
-  checkTextInputChange: boolean
+  walletAddress?: string
+  checkEmailInputChange: boolean
+  checkWalletInputChange?: boolean
   secureTextEntry: boolean
   isValidUser: boolean
   isValidPassword: boolean

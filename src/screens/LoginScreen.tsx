@@ -15,7 +15,7 @@ import Animated, {
   FadeInDown,
   FadeInLeft,
 } from 'react-native-reanimated';
-import { LoginFormData } from '../types';
+import { FormData } from '../types';
 
 export interface ILoginScreenProps {
   navigation: any;
@@ -26,27 +26,27 @@ const AnimatedView = Animated.createAnimatedComponent(View);
 const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
   navigation,
 }) => {
-  const [formData, setFormData] = React.useState<LoginFormData>({
+  const [formData, setFormData] = React.useState<FormData>({
     username: '',
     password: '',
-    checkTextInputChange: false,
+    checkEmailInputChange: false,
     secureTextEntry: true,
     isValidUser: true,
     isValidPassword: true,
   });
-  const handleTextInputChange = (val: any) => {
+  const handleEmailInputChange = (val: any) => {
     if (val.trim().length >= 2) {
       setFormData({
         ...formData,
         username: val,
-        checkTextInputChange: true,
+        checkEmailInputChange: true,
         isValidUser: true,
       });
     } else {
       setFormData({
         ...formData,
         username: val,
-        checkTextInputChange: false,
+        checkEmailInputChange: false,
         isValidUser: false,
       });
     }
@@ -54,41 +54,41 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
 
   const handlePasswordChange = (val: any) => {
     if (val.trim().length >= 6) {
-        setFormData({
-            ...formData,
-            password: val,
-            isValidPassword: true,
-        })
+      setFormData({
+        ...formData,
+        password: val,
+        isValidPassword: true,
+      });
     } else {
-        setFormData({
-            ...formData,
-            password: val,
-            isValidPassword: false
-        })
+      setFormData({
+        ...formData,
+        password: val,
+        isValidPassword: false,
+      });
     }
-  }
+  };
 
   const handleValidateUser = (val: any) => {
     if (val.trim().length >= 2) {
-        setFormData({
-            ...formData,
-            username: val,
-            isValidUser: true,
-        })
+      setFormData({
+        ...formData,
+        username: val,
+        isValidUser: true,
+      });
     } else {
-        setFormData({
-            ...formData,
-            username: val,
-            isValidUser: false
-        })
+      setFormData({
+        ...formData,
+        username: val,
+        isValidUser: false,
+      });
     }
   };
 
   const handleSecureTextEntryChange = () => {
     setFormData({
-        ...formData,
-        secureTextEntry: !formData.secureTextEntry
-    })
+      ...formData,
+      secureTextEntry: !formData.secureTextEntry,
+    });
   };
 
   return (
@@ -107,19 +107,20 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
             placeholder="Email..."
             style={LoginScreenStyles.textInput}
             autoCapitalize="none"
-            onChangeText={val => handleTextInputChange(val)}
+            onChangeText={val => handleEmailInputChange(val)}
             onEndEditing={e => handleValidateUser(e.nativeEvent.text)}
           />
-          {formData.checkTextInputChange ? (
+          {formData.checkEmailInputChange ? (
             <AnimatedView entering={BounceIn.duration(500)}>
               <Feather name="check-circle" color="green" size={20} />
             </AnimatedView>
           ) : null}
         </View>
-        {formData.isValidUser ? null : 
-        <AnimatedView entering={FadeInLeft.duration(200)}>
-            <Text style={LoginScreenStyles.errorMsg}>用户名最短要2个字符</Text>    
-        </AnimatedView>}
+        {formData.isValidUser ? null : (
+          <AnimatedView entering={FadeInLeft.duration(200)}>
+            <Text style={LoginScreenStyles.errorMsg}>用户名最短要2个字符</Text>
+          </AnimatedView>
+        )}
         <Text style={{ ...LoginScreenStyles.text_footer, marginTop: 25 }}>
           密码:
         </Text>
@@ -130,7 +131,7 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
             style={LoginScreenStyles.textInput}
             autoCapitalize="none"
             secureTextEntry={formData.secureTextEntry ? true : false}
-            onChangeText={(val) => handlePasswordChange(val)}
+            onChangeText={val => handlePasswordChange(val)}
           />
           <TouchableOpacity onPress={handleSecureTextEntryChange}>
             {formData.secureTextEntry ? (
@@ -146,7 +147,9 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
           </AnimatedView>
         )}
         <View style={LoginScreenStyles.button}>
-          <TouchableOpacity style={LoginScreenStyles.signIn} onPress={() => {}}>
+          <TouchableOpacity
+            style={LoginScreenStyles.signIn}
+            onPress={() => {}}>
             <LinearGradient
               colors={['#625B71', '#7D5260']}
               style={LoginScreenStyles.signIn}>
