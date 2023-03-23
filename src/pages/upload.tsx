@@ -1,10 +1,27 @@
 import * as React from 'react';
-import {Alert, StyleSheet, ToastAndroid, View, Image} from 'react-native';
-import {Button, Dialog, Portal, Text, ProgressBar} from 'react-native-paper';
+import {
+  Alert,
+  StyleSheet,
+  ToastAndroid,
+  View,
+  Image,
+  ScrollView,
+} from 'react-native';
+import {
+  Button,
+  Dialog,
+  Portal,
+  Text,
+  ProgressBar,
+  TextInput,
+} from 'react-native-paper';
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 import {serverIPP} from '../values/strings';
+import {PreferencesContext} from '../context/preference';
+import styles from '../../styles';
+import {userInfo} from '../values/global';
 
 export default function UploadScreen() {
   const [cameraPermissionInfo, requestCameraPermission] =
@@ -21,7 +38,68 @@ export default function UploadScreen() {
     FileSystem.UploadTask | undefined
   >();
 
+  const uploadDataBase = (resBody: string) => {
+    let resDict = JSON.parse(resBody);
+    fetch('http://' + serverIPP + '/upload', {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify({
+        url: resDict.url,
+        nftName: nftName,
+        nftDescription: nftDescription,
+        owner: userInfo.email,
+        fee: fee,
+        remark: remark,
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }).then(_res => {
+      if (_res.ok) {
+        _res.text().then(_resData => {
+          // console.log(resData);
+          let _resDataConverted = JSON.parse(_resData);
+          console.log(_resData);
+          Alert.alert(
+            '上传成功！',
+            '拥有者: ' +
+              _resDataConverted.owner +
+              '\n' +
+              '作品名称: ' +
+              _resDataConverted.nftName +
+              '\n' +
+              '作品描述: ' +
+              _resDataConverted.nftDescription +
+              '\n' +
+              '价格: ' +
+              _resDataConverted.fee +
+              '\n' +
+              '备注: ' +
+              _resDataConverted.remark +
+              '\n' +
+              'Url: ' +
+              resDict.url,
+          );
+          // setUploadPercentage(1);
+          // Alert.alert('上传成功！', resData.fileName);
+          console.log('FINISH: ' + resDict.url);
+          console.log('');
+          console.log('');
+        });
+      } else {
+        Alert.alert('请求失败', 'error', [
+          {text: '确定', onPress: () => console.log('OK Pressed!')},
+        ]);
+      }
+    });
+  };
+
   const getAndUploadImage = async () => {
+    if (!userInfo.email.length) {
+      Alert.alert('无法读取信息', '请先登录');
+      return;
+    }
     if (pickedImage) {
       setUploadingVisible(true);
       setUploadStatus(1); // 正在写入
@@ -34,7 +112,7 @@ export default function UploadScreen() {
           setUploadStatus(2); // 正在上传
           await uploadImage(asset.uri).then(async () => {
             setUploadTask(undefined);
-            setUploadStatus(3); // 上传成功
+            setUploadStatus(3); // 上传成功或已取消
             // clearCache();
           });
         })
@@ -82,6 +160,7 @@ export default function UploadScreen() {
               ToastAndroid.SHORT,
               ToastAndroid.BOTTOM,
             );
+            uploadDataBase(res.body);
           } else {
             ToastAndroid.showWithGravity(
               '上传失败',
@@ -226,58 +305,129 @@ export default function UploadScreen() {
   }
 
   const uploadDialogTitle = ['无上传任务', '正在写入', '正在上传', '上传成功'];
+  const [nftName, setNftName] = React.useState('');
+  const [nftDescription, setNftDescription] = React.useState('');
+  const [fee, setFee] = React.useState(0);
+  const [remark, setRemark] = React.useState('');
+  const {isThemeDark} = React.useContext(PreferencesContext);
 
   return (
-    <View>
-      <Portal>
-        <Dialog
-          visible={uploadingVisible}
-          onDismiss={() => {
-            setUploadingVisible(false);
-          }}>
-          <Dialog.Title>{uploadDialogTitle[uploadStatus]}</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">已完成{uploadPercentage}%</Text>
-            <ProgressBar progress={parseFloat(uploadPercentage) / 100} />
-          </Dialog.Content>
-          <Dialog.Actions>
-            {uploadStatus !== 3 && (
-              <>
-                <Button
-                  onPress={() => {
-                    uploadTask?.cancelAsync().then(() => {
-                      setUploadTask(undefined);
-                      console.log('取消上传');
-                    });
-                    setUploadingVisible(false);
-                  }}>
-                  取消
-                </Button>
-                <Button onPress={() => setUploadingVisible(false)}>隐藏</Button>
-              </>
-            )}
-            {uploadStatus === 3 && (
-              <>
-                <Button
-                  onPress={() => {
-                    setUploadingVisible(false);
-                  }}>
-                  完成
-                </Button>
-              </>
-            )}
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-
+    <ScrollView>
       <View style={style.imagePreviewContainer}>{imagePreview}</View>
-      <Button onPress={cameraPressHandler}>从相机拍摄</Button>
-      <Button onPress={pickImage}>从相册选择</Button>
-      <Button onPress={getAndUploadImage} disabled={uploadTask !== undefined}>
-        上传所选图片
-      </Button>
-      <Button onPress={clearCache}>清除缓存相册</Button>
-    </View>
+
+      <View style={[{marginVertical: 20}, styles.innerContainer]}>
+        <TextInput
+          mode="outlined"
+          label="作品名称"
+          style={{width: 300}}
+          placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
+          underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
+          clearButtonMode="always"
+          selectionColor="skyblue"
+          maxLength={50}
+          onChangeText={_nftName => {
+            setNftName(_nftName);
+          }}
+        />
+
+        <TextInput
+          mode="outlined"
+          label="作品描述"
+          style={{width: 300}}
+          placeholder="简述作品"
+          placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
+          underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
+          clearButtonMode="always"
+          selectionColor="skyblue"
+          maxLength={50}
+          onChangeText={_nftDescription => {
+            setNftDescription(_nftDescription);
+          }}
+        />
+
+        <TextInput
+          mode="outlined"
+          label="价格"
+          style={{width: 300}}
+          placeholder="作品售价"
+          placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
+          underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
+          clearButtonMode="always"
+          selectionColor="skyblue"
+          maxLength={50}
+          onChangeText={_fee => {
+            setFee(parseInt(_fee, 10));
+          }}
+        />
+
+        <TextInput
+          mode="outlined"
+          label="备注"
+          style={{width: 300}}
+          placeholder="提供给管理员审核"
+          placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
+          underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
+          clearButtonMode="always"
+          selectionColor="skyblue"
+          maxLength={50}
+          onChangeText={_remark => {
+            setRemark(_remark);
+          }}
+        />
+      </View>
+
+      <View>
+        <Portal>
+          <Dialog
+            visible={uploadingVisible}
+            onDismiss={() => {
+              setUploadingVisible(false);
+            }}>
+            <Dialog.Title>{uploadDialogTitle[uploadStatus]}</Dialog.Title>
+            <Dialog.Content>
+              <Text variant="bodyMedium">已完成{uploadPercentage}%</Text>
+              <ProgressBar progress={parseFloat(uploadPercentage) / 100} />
+            </Dialog.Content>
+            <Dialog.Actions>
+              {uploadStatus !== 3 && (
+                <>
+                  <Button
+                    onPress={() => {
+                      uploadTask?.cancelAsync().then(() => {
+                        setUploadTask(undefined);
+                        console.log('取消上传');
+                      });
+                      setUploadingVisible(false);
+                    }}>
+                    取消
+                  </Button>
+                  <Button onPress={() => setUploadingVisible(false)}>
+                    隐藏
+                  </Button>
+                </>
+              )}
+              {uploadStatus === 3 && (
+                <>
+                  <Button
+                    onPress={() => {
+                      setUploadingVisible(false);
+                    }}>
+                    完成
+                  </Button>
+                </>
+              )}
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+
+        <Button onPress={cameraPressHandler}>从相机拍摄</Button>
+        <Button onPress={pickImage}>从相册选择</Button>
+        <Button onPress={getAndUploadImage} disabled={uploadTask !== undefined}>
+          上传所选图片
+        </Button>
+        <Button onPress={clearCache}>清除缓存相册</Button>
+      </View>
+    </ScrollView>
   );
 }
 
