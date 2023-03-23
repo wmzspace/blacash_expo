@@ -9,29 +9,32 @@ const routes2: ScreenRoute2[] = [
     name: 'Gallery',
     component: GalleryScreen,
     options: {
-      headerShown: false,
-      // headerTitleAlign: 'center',
-    },
-  },
-  {
-    name: 'Upload',
-    component: UploadScreen,
-    options: {
-      headerShown: false,
-    },
-  },
-  {
-    name: 'Account',
-    component: AccountScreen,
-    options: {
-      headerShown: false,
+      headerShown: true,
+      headerTitleAlign: 'center',
     },
   },
   {
     name: 'Mine',
     component: MineScreen,
     options: {
-      headerShown: false,
+      headerShown: true,
+      headerTitleAlign: 'center',
+    },
+  },
+  {
+    name: 'Upload',
+    component: UploadScreen,
+    options: {
+      headerShown: true,
+      headerTitleAlign: 'center',
+    },
+  },
+  {
+    name: 'Account',
+    component: AccountScreen,
+    options: {
+      headerShown: true,
+      headerTitleAlign: 'center',
     },
   },
 ];
