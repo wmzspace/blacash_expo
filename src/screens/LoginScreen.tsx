@@ -34,6 +34,62 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
     isValidUser: true,
     isValidPassword: true,
   });
+  const handleTextInputChange = (val: any) => {
+    if (val.trim().length >= 2) {
+      setFormData({
+        ...formData,
+        username: val,
+        checkTextInputChange: true,
+        isValidUser: true,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        username: val,
+        checkTextInputChange: false,
+        isValidUser: false,
+      });
+    }
+  };
+
+  const handlePasswordChange = (val: any) => {
+    if (val.trim().length >= 6) {
+        setFormData({
+            ...formData,
+            password: val,
+            isValidPassword: true,
+        })
+    } else {
+        setFormData({
+            ...formData,
+            password: val,
+            isValidPassword: false
+        })
+    }
+  }
+
+  const handleValidateUser = (val: any) => {
+    if (val.trim().length >= 2) {
+        setFormData({
+            ...formData,
+            username: val,
+            isValidUser: true,
+        })
+    } else {
+        setFormData({
+            ...formData,
+            username: val,
+            isValidUser: false
+        })
+    }
+  };
+
+  const handleSecureTextEntryChange = () => {
+    setFormData({
+        ...formData,
+        secureTextEntry: !formData.secureTextEntry
+    })
+  };
 
   return (
     <View style={LoginScreenStyles.container}>
@@ -51,10 +107,19 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
             placeholder="Email..."
             style={LoginScreenStyles.textInput}
             autoCapitalize="none"
+            onChangeText={val => handleTextInputChange(val)}
+            onEndEditing={e => handleValidateUser(e.nativeEvent.text)}
           />
-
-          <Feather name="check-circle" color="green" size={20} />
+          {formData.checkTextInputChange ? (
+            <AnimatedView entering={BounceIn.duration(500)}>
+              <Feather name="check-circle" color="green" size={20} />
+            </AnimatedView>
+          ) : null}
         </View>
+        {formData.isValidUser ? null : 
+        <AnimatedView entering={FadeInLeft.duration(200)}>
+            <Text style={LoginScreenStyles.errorMsg}>用户名最短要2个字符</Text>    
+        </AnimatedView>}
         <Text style={{ ...LoginScreenStyles.text_footer, marginTop: 25 }}>
           密码:
         </Text>
@@ -64,8 +129,10 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
             placeholder="Password..."
             style={LoginScreenStyles.textInput}
             autoCapitalize="none"
+            secureTextEntry={formData.secureTextEntry ? true : false}
+            onChangeText={(val) => handlePasswordChange(val)}
           />
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={handleSecureTextEntryChange}>
             {formData.secureTextEntry ? (
               <Feather name="eye-off" color="grey" size={20} />
             ) : (
@@ -74,8 +141,8 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
           </TouchableOpacity>
         </View>
         {formData.isValidPassword ? null : (
-          <AnimatedView entering={FadeInLeft.duration(100)}>
-            <Text>Password must be 6 characters long</Text>
+          <AnimatedView entering={FadeInLeft.duration(200)}>
+            <Text style={LoginScreenStyles.errorMsg}>密码最短要6个字符</Text>
           </AnimatedView>
         )}
         <View style={LoginScreenStyles.button}>
