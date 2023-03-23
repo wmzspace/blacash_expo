@@ -204,7 +204,7 @@ const SignUpScreen: React.FunctionComponent<ISignUpScreenProps> = ({
               visible={visible}
               onDismiss={hideModal}
               contentContainerStyle={AuthScreenStyles.modal}>
-              <Text>Example Modal. Click outside this area to dismiss.</Text>
+              <Text style={AuthScreenStyles.modalText}>Example Modal. Click outside this area to dismiss.</Text>
             </Modal>
           </Portal>
           <TouchableOpacity

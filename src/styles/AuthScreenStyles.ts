@@ -80,6 +80,9 @@ export const AuthScreenStyles = StyleSheet.create({
     marginRight: width * 0.1,
     height: height * 0.3,
     width: width * 0.8,
+    borderRadius: 20
   },
-  
+  modalText: {
+    color: '#fff',
+  }
 });
