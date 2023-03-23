@@ -3,7 +3,7 @@ import {View} from 'react-native';
 
 import {Button, Text} from 'react-native-paper';
 
-import styles from '../../styles';
+import styles from '../../styles/SplashScreenStyle';
 
 import {NativeStackScreenProps} from 'react-native-screens/native-stack';
 import {RootStackParamList} from '../types';
@@ -13,7 +13,7 @@ export default function LoginScreen({navigation}: Props) {
   return (
     <View style={[styles.container]}>
       <View style={styles.innerContainer}>
-        <Text className="font-bold" style={{margin: 30, fontSize: 30}}>
+        <Text style={{margin: 30, fontSize: 30}}>
           Login Page
         </Text>
         <Button mode="contained" onPress={() => navigation.navigate('Home')}>

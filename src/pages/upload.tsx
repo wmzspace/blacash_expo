@@ -424,6 +424,7 @@ export default function UploadScreen() {
         <Button onPress={pickImage}>从相册选择</Button>
         <Button onPress={getAndUploadImage} disabled={uploadTask !== undefined}>
           上传所选图片
+
         </Button>
         <Button onPress={clearCache}>清除缓存相册</Button>
       </View>
