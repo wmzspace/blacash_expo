@@ -1,6 +1,7 @@
-import { Platform, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
+const { height, width } = Dimensions.get('screen');
 
-export const LoginScreenStyles = StyleSheet.create({
+export const AuthScreenStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#625B71',
@@ -67,4 +68,18 @@ export const LoginScreenStyles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  portal: {
+    display: 'flex',
+    justifyContent: 'center'
+
+  }, 
+  modal: {
+    backgroundColor: '#B58392',
+    padding: 20,
+    marginLeft: width * 0.1,
+    marginRight: width * 0.1,
+    height: height * 0.3,
+    width: width * 0.8,
+  },
+  
 });

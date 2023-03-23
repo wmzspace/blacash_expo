@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
-import { LoginScreenStyles } from '../styles/LoginScreenStyles';
+import { AuthScreenStyles } from '../styles/AuthScreenStyles';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
@@ -92,23 +92,21 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
     });
   };
 
-  const keyboardVerticalOffset = 60;
-
   return (
-    <KeyboardAvoidingView behavior='height' style={LoginScreenStyles.container}>
+    <KeyboardAvoidingView behavior='height' style={AuthScreenStyles.container}>
         <StatusBar backgroundColor="#625B71" barStyle="light-content" />
-        <View style={LoginScreenStyles.header}>
-          <Text style={LoginScreenStyles.text_header}>Welcome back! 😊</Text>
+        <View style={AuthScreenStyles.header}>
+          <Text style={AuthScreenStyles.text_header}>Welcome back! 😊</Text>
         </View>
         <AnimatedView
-          style={LoginScreenStyles.footer}
+          style={AuthScreenStyles.footer}
           entering={FadeInDown.duration(500)}>
-          <Text style={LoginScreenStyles.text_footer}>邮箱:</Text>
-          <View style={LoginScreenStyles.action}>
+          <Text style={AuthScreenStyles.text_footer}>邮箱:</Text>
+          <View style={AuthScreenStyles.action}>
             <FontAwesome name="user-o" color="#333" size={20} />
             <TextInput
               placeholder="Email..."
-              style={LoginScreenStyles.textInput}
+              style={AuthScreenStyles.textInput}
               autoCapitalize="none"
               onChangeText={val => handleEmailInputChange(val)}
               onEndEditing={e => handleValidateUser(e.nativeEvent.text)}
@@ -121,19 +119,19 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
           </View>
           {formData.isValidUser ? null : (
             <AnimatedView entering={FadeInLeft.duration(200)}>
-              <Text style={LoginScreenStyles.errorMsg}>
+              <Text style={AuthScreenStyles.errorMsg}>
                 用户名最短要2个字符
               </Text>
             </AnimatedView>
           )}
-          <Text style={{ ...LoginScreenStyles.text_footer, marginTop: 25 }}>
+          <Text style={{ ...AuthScreenStyles.text_footer, marginTop: 25 }}>
             密码:
           </Text>
-          <View style={LoginScreenStyles.action}>
+          <View style={AuthScreenStyles.action}>
             <Feather name="lock" color="#333" size={20} />
             <TextInput
               placeholder="Password..."
-              style={LoginScreenStyles.textInput}
+              style={AuthScreenStyles.textInput}
               autoCapitalize="none"
               secureTextEntry={formData.secureTextEntry ? true : false}
               onChangeText={val => handlePasswordChange(val)}
@@ -148,17 +146,17 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
           </View>
           {formData.isValidPassword ? null : (
             <AnimatedView entering={FadeInLeft.duration(200)}>
-              <Text style={LoginScreenStyles.errorMsg}>密码最短要6个字符</Text>
+              <Text style={AuthScreenStyles.errorMsg}>密码最短要6个字符</Text>
             </AnimatedView>
           )}
-          <View style={LoginScreenStyles.button}>
+          <View style={AuthScreenStyles.button}>
             <TouchableOpacity
-              style={LoginScreenStyles.signIn}
+              style={AuthScreenStyles.signIn}
               onPress={() => {}}>
               <LinearGradient
                 colors={['#625B71', '#7D5260']}
-                style={LoginScreenStyles.signIn}>
-                <Text style={{ ...LoginScreenStyles.textSign, color: '#fff' }}>
+                style={AuthScreenStyles.signIn}>
+                <Text style={{ ...AuthScreenStyles.textSign, color: '#fff' }}>
                   登陆
                 </Text>
               </LinearGradient>
@@ -166,7 +164,7 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
             <TouchableOpacity
               onPress={() => navigation.navigate('SignupScreen')}
               style={[
-                LoginScreenStyles.signIn,
+                AuthScreenStyles.signIn,
                 {
                   borderColor: '#625B71',
                   borderWidth: 1,
@@ -175,7 +173,7 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
               ]}>
               <Text
                 style={[
-                  LoginScreenStyles.textSign,
+                  AuthScreenStyles.textSign,
                   {
                     color: '#625B71',
                   },
