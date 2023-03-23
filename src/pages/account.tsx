@@ -14,7 +14,7 @@ export default function AccountScreen({navigation}: Props) {
   return (
     <View style={[styles.container]}>
       <View style={styles.innerContainer}>
-        <Text className="font-bold" style={{margin: 30, fontSize: 30}}>
+        <Text style={{margin: 30, fontSize: 30}}>
           Account Page
         </Text>
         <Divider style={{marginVertical: 10}} />

@@ -14,7 +14,7 @@ export default function GalleryScreen({navigation}: Props) {
   return (
     <View style={[styles.container]}>
       <View style={styles.innerContainer}>
-        <Text className="font-bold" style={{margin: 30, fontSize: 30}}>
+        <Text style={{margin: 30, fontSize: 30}}>
           Gallery Page
         </Text>
         {/*TODO: TS ERROR*/}

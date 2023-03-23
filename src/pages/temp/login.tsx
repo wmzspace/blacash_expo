@@ -13,7 +13,7 @@ export default function LoginScreen({navigation}: Props) {
   return (
     <View style={[styles.container]}>
       <View style={styles.innerContainer}>
-        <Text className="font-bold" style={{margin: 30, fontSize: 30}}>
+        <Text style={{margin: 30, fontSize: 30}}>
           Login Page
         </Text>
         <Button mode="contained" onPress={() => navigation.navigate('Home')}>

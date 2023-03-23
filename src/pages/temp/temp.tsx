@@ -5,7 +5,7 @@ import * as React from "react";
 
 <View style={[styles.container]}>
   <View style={styles.innerContainer}>
-    <Text className="font-bold" style={{margin: 30, fontSize: 30}}>
+    <Text style={{margin: 30, fontSize: 30}}>
       Main Page
     </Text>
     <Button mode="contained" onPress={() => navigation.navigate('Home')}>

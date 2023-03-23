@@ -14,7 +14,7 @@ export default function UploadScreen({navigation}: Props) {
   return (
     <View style={[styles.container]}>
       <View style={styles.innerContainer}>
-        <Text className="font-bold" style={{margin: 30, fontSize: 30}}>
+        <Text style={{margin: 30, fontSize: 30}}>
           Upload Page
         </Text>
         <Divider style={{marginVertical: 10}} />
