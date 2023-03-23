@@ -18,10 +18,10 @@ import {
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
-import {serverIPP} from '../values/strings';
-import {PreferencesContext} from '../context/preference';
+import { serverIPP } from '../values/strings';
+import { PreferencesContext } from '../context/preference';
 import styles from '../../styles';
-import {userInfo} from '../values/global';
+import { userInfo } from '../values/global';
 
 export default function UploadScreen() {
   const [cameraPermissionInfo, requestCameraPermission] =
@@ -89,7 +89,7 @@ export default function UploadScreen() {
         });
       } else {
         Alert.alert('请求失败', 'error', [
-          {text: '确定', onPress: () => console.log('OK Pressed!')},
+          { text: '确定', onPress: () => console.log('OK Pressed!') },
         ]);
       }
     });
@@ -116,7 +116,10 @@ export default function UploadScreen() {
             // clearCache();
           });
         })
-        .catch(e => Alert.alert('上传失败', e));
+        .catch(e => {
+          Alert.alert('上传失败', e);
+          setUploadStatus(0);
+        });
     } else {
       ToastAndroid.showWithGravity(
         '请先选择或拍摄图片',
@@ -185,10 +188,23 @@ export default function UploadScreen() {
       return permissionResponse.granted;
     }
     if (cameraPermissionInfo?.status === ImagePicker.PermissionStatus.DENIED) {
-      Alert.alert(
-        'Insufficient permission!',
-        'You need to grant camera access to use this app',
-      );
+      Alert.alert('不具备访问权限', 'Blacash需要相机权限以使用该功能');
+      return false;
+    }
+    return true;
+  }
+
+  async function verifyMediaPermission() {
+    if (
+      // cameraPermissionInfo.status === ImagePicker.PermissionStatus.UNDETERMINED
+      mediaPermissionInfo?.status === MediaLibrary.PermissionStatus.UNDETERMINED
+    ) {
+      const permissionResponse = await requestMediaPermission();
+
+      return permissionResponse.granted;
+    }
+    if (mediaPermissionInfo?.status === MediaLibrary.PermissionStatus.DENIED) {
+      Alert.alert('不具备访问权限', 'Blacash需要媒体访问权限以使用该功能');
       return false;
     }
     return true;
@@ -211,14 +227,9 @@ export default function UploadScreen() {
 
   const writeImage = async (): Promise<MediaLibrary.Asset> => {
     if (pickedImage) {
+      const hasPermission = await verifyMediaPermission();
       let image = pickedImage[0];
-      if (!mediaPermissionInfo?.granted) {
-        await requestMediaPermission()
-          .then(res => console.log(res))
-          .catch(e => console.warn('warn3: ' + e));
-      }
-
-      if (mediaPermissionInfo?.granted) {
+      if (hasPermission) {
         const asset = await MediaLibrary.createAssetAsync(image.uri);
         const album = await MediaLibrary.getAlbumAsync('BlaCash');
         if (album == null) {
@@ -244,6 +255,8 @@ export default function UploadScreen() {
             })
             .catch(e => console.warn('warn1: ' + e));
         }
+        // console.warn(asset);
+
         return asset;
       } else {
         ToastAndroid.showWithGravity(
@@ -251,9 +264,10 @@ export default function UploadScreen() {
           ToastAndroid.SHORT,
           ToastAndroid.BOTTOM,
         );
+        throw '媒体权限未获取';
       }
     }
-    throw new Error('写入权限获取失败');
+    throw '媒体权限未获取';
   };
 
   const clearCache = async () => {
@@ -300,8 +314,8 @@ export default function UploadScreen() {
   let imagePreview = <Text style={style.previewText}>未选择图片</Text>;
 
   if (pickedImage) {
-    const {uri} = pickedImage[0];
-    imagePreview = <Image source={{uri: uri}} style={style.imageStyle} />;
+    const { uri } = pickedImage[0];
+    imagePreview = <Image source={{ uri: uri }} style={style.imageStyle} />;
   }
 
   const uploadDialogTitle = ['无上传任务', '正在写入', '正在上传', '上传成功'];
@@ -309,17 +323,17 @@ export default function UploadScreen() {
   const [nftDescription, setNftDescription] = React.useState('');
   const [fee, setFee] = React.useState(0);
   const [remark, setRemark] = React.useState('');
-  const {isThemeDark} = React.useContext(PreferencesContext);
+  const { isThemeDark } = React.useContext(PreferencesContext);
 
   return (
     <ScrollView>
       <View style={style.imagePreviewContainer}>{imagePreview}</View>
 
-      <View style={[{marginVertical: 20}, styles.innerContainer]}>
+      <View style={[{ marginVertical: 20 }, styles.innerContainer]}>
         <TextInput
           mode="outlined"
           label="作品名称"
-          style={{width: 300}}
+          style={{ width: 300 }}
           placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
           underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
           clearButtonMode="always"
@@ -333,7 +347,7 @@ export default function UploadScreen() {
         <TextInput
           mode="outlined"
           label="作品描述"
-          style={{width: 300}}
+          style={{ width: 300 }}
           placeholder="简述作品"
           placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
           underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
@@ -348,7 +362,7 @@ export default function UploadScreen() {
         <TextInput
           mode="outlined"
           label="价格"
-          style={{width: 300}}
+          style={{ width: 300 }}
           placeholder="作品售价"
           placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
           underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
@@ -363,7 +377,7 @@ export default function UploadScreen() {
         <TextInput
           mode="outlined"
           label="备注"
-          style={{width: 300}}
+          style={{ width: 300 }}
           placeholder="提供给管理员审核"
           placeholderTextColor={isThemeDark ? 'gray' : 'gray'}
           underlineColor={isThemeDark ? 'gray' : 'rgba(47,100,125,0.26)'}
@@ -389,7 +403,7 @@ export default function UploadScreen() {
               <ProgressBar progress={parseFloat(uploadPercentage) / 100} />
             </Dialog.Content>
             <Dialog.Actions>
-              {uploadStatus !== 3 && (
+              {uploadStatus !== 3 && uploadStatus !== 0 && (
                 <>
                   <Button
                     onPress={() => {
@@ -406,7 +420,7 @@ export default function UploadScreen() {
                   </Button>
                 </>
               )}
-              {uploadStatus === 3 && (
+              {(uploadStatus === 3 || uploadStatus === 0) && (
                 <>
                   <Button
                     onPress={() => {
@@ -424,7 +438,6 @@ export default function UploadScreen() {
         <Button onPress={pickImage}>从相册选择</Button>
         <Button onPress={getAndUploadImage} disabled={uploadTask !== undefined}>
           上传所选图片
-
         </Button>
         <Button onPress={clearCache}>清除缓存相册</Button>
       </View>
@@ -442,6 +455,6 @@ const style = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 8,
   },
-  previewText: {color: '#592454'},
-  imageStyle: {width: '100%', height: '100%'},
+  previewText: { color: '#592454' },
+  imageStyle: { width: '100%', height: '100%' },
 });
