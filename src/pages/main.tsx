@@ -1,40 +1,36 @@
 import * as React from 'react';
-import {View} from 'react-native';
 
-import {Button, Divider, Text, useTheme} from 'react-native-paper';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+const Tab = createBottomTabNavigator();
 
-import styles from '../../styles';
+import routes2 from '../config/routes2';
+
+import {StatusBar} from 'expo-status-bar';
+import {globalVal, userInfo} from '../values/global';
 
 import {NativeStackScreenProps} from 'react-native-screens/native-stack';
 import {RootStackParamList} from '../types';
 type Props = NativeStackScreenProps<RootStackParamList, 'Main'>;
 
-import {StatusBar} from 'expo-status-bar';
-import {PreferencesContext} from '../context/preference';
-
-export default function MainScreen({navigation}: Props) {
-  const {toggleTheme, isThemeDark} = React.useContext(PreferencesContext);
+export default function MainScreen({route}: Props) {
+  globalVal.uploadUrl = '';
+  for (let item in route.params) {
+    userInfo[item] = route.params[item];
+    // console.log(route.params[item]);
+  }
   return (
     <>
       <StatusBar />
-      <View style={[styles.container]}>
-        <View style={styles.innerContainer}>
-          <Text className="font-bold" style={{margin: 30, fontSize: 30}}>
-            Main Page
-          </Text>
-          <Button mode="contained" onPress={() => navigation.navigate('Home')}>
-            返回
-          </Button>
-          <Divider style={{marginVertical: 10}} />
-          <Button
-            mode="text"
-            onPress={() => {
-              toggleTheme();
-            }}>
-            切换深浅主题色
-          </Button>
-        </View>
-      </View>
+      <Tab.Navigator>
+        {routes2.map((route2: any, i: number) => (
+          <Tab.Screen
+            key={i}
+            name={route2.name}
+            component={route2.component}
+            options={route2.options}
+          />
+        ))}
+      </Tab.Navigator>
     </>
   );
 }

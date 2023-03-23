@@ -1,25 +1,23 @@
-import * as React from 'react';
-import {View} from 'react-native';
+import {View} from "react-native";
+import styles from "../../../styles";
+import {Button, Divider, Text} from "react-native-paper";
+import * as React from "react";
 
-import {Button, Text} from 'react-native-paper';
-
-import styles from '../../styles';
-
-import {NativeStackScreenProps} from 'react-native-screens/native-stack';
-import {RootStackParamList} from '../types';
-type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
-
-export default function SignupScreen({navigation}: Props) {
-  return (
-    <View style={[styles.container]}>
-      <View style={styles.innerContainer}>
-        <Text className="font-bold" style={{margin: 30, fontSize: 30}}>
-          Signup Page
-        </Text>
-        <Button mode="contained" onPress={() => navigation.navigate('Home')}>
-          返回
-        </Button>
-      </View>
-    </View>
-  );
-}
+<View style={[styles.container]}>
+  <View style={styles.innerContainer}>
+    <Text className="font-bold" style={{margin: 30, fontSize: 30}}>
+      Main Page
+    </Text>
+    <Button mode="contained" onPress={() => navigation.navigate('Home')}>
+      返回
+    </Button>
+    <Divider style={{marginVertical: 10}} />
+    <Button
+        mode="text"
+        onPress={() => {
+          toggleTheme();
+        }}>
+      切换深浅主题色
+    </Button>
+  </View>
+</View>

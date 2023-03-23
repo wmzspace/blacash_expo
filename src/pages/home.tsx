@@ -7,10 +7,11 @@ const AnimatedView = Animated.createAnimatedComponent(View);
 import styles from '../../styles';
 import {checkUpdate} from '../api/version';
 
-import {NativeStackScreenProps} from 'react-native-screens/native-stack';
-import {RootStackParamList} from '../types';
 import {StatusBar} from 'expo-status-bar';
 import {PreferencesContext} from '../context/preference';
+
+import {NativeStackScreenProps} from 'react-native-screens/native-stack';
+import {RootStackParamList} from '../types';
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen({navigation}: Props) {
