@@ -96,16 +96,14 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
 
   return (
     <View style={LoginScreenStyles.container}>
-      <StatusBar backgroundColor="#625B71" barStyle="light-content" />
-      <View style={LoginScreenStyles.header}>
-        <Text style={LoginScreenStyles.text_header}>Welcome back! 😊</Text>
-      </View>
-      <AnimatedView
-        style={LoginScreenStyles.footer}
-        entering={FadeInDown.duration(500)}>
-        <KeyboardAvoidingView
-          behavior="position"
-          keyboardVerticalOffset={keyboardVerticalOffset}>
+      <KeyboardAvoidingView behavior="height" style={{ flex: 1 }}>
+        <StatusBar backgroundColor="#625B71" barStyle="light-content" />
+        <View style={LoginScreenStyles.header}>
+          <Text style={LoginScreenStyles.text_header}>Welcome back! 😊</Text>
+        </View>
+        <AnimatedView
+          style={LoginScreenStyles.footer}
+          entering={FadeInDown.duration(500)}>
           <Text style={LoginScreenStyles.text_footer}>邮箱:</Text>
           <View style={LoginScreenStyles.action}>
             <FontAwesome name="user-o" color="#333" size={20} />
@@ -187,8 +185,8 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
               </Text>
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
-      </AnimatedView>
+        </AnimatedView>
+      </KeyboardAvoidingView>
     </View>
   );
 };

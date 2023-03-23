@@ -31,9 +31,8 @@ const CombinedDarkMD2Theme = merge(MD2DarkTheme, NavigationDarkTheme);
 
 // ==============
 // ==============
-import { RootStackScreen } from './src/screens';
+import RootStackScreen from './src/screens/RootStackScreen';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-
 
 export default function App() {
   const [isThemeDark, setIsThemeDark] = React.useState(false);

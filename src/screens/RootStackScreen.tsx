@@ -1,6 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { SplashScreen, SignupScreen, LoginScreen } from './';
+import LoginScreen from './LoginScreen';
+import SignupScreen from './SignupScreen';
+import SplashScreen from './SplashScreen';
 
 export interface IRootStackScreenProps {}
 
