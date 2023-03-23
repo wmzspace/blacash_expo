@@ -283,7 +283,7 @@ app.post('/imgUrl', upload.single('files'), function (req, res, next) {
   // console.log('------------------------------');
   // console.log('start!!!');
   let files = req.file;
-  console.log('Uploading file: ' + files.originalname);
+  console.log('Uploading file:' + files);
   // let id = req.body.id;
   let relativeDir = files.path.replace(/\\/g, '/');
   let rootDir = 'https://wmzspace.space/blacash/';

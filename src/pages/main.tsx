@@ -6,18 +6,8 @@ const Tab = createBottomTabNavigator();
 import routes2 from '../config/routes2';
 
 import {StatusBar} from 'expo-status-bar';
-import {globalVal, userInfo} from '../values/global';
 
-import {NativeStackScreenProps} from 'react-native-screens/native-stack';
-import {RootStackParamList} from '../types';
-type Props = NativeStackScreenProps<RootStackParamList, 'Main'>;
-
-export default function MainScreen({route}: Props) {
-  globalVal.uploadUrl = '';
-  for (let item in route.params) {
-    userInfo[item] = route.params[item];
-    // console.log(route.params[item]);
-  }
+export default function MainScreen() {
   return (
     <>
       <StatusBar />
