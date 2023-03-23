@@ -1,63 +1,111 @@
 import * as React from 'react';
-import {View, Alert, Image, Text, StyleSheet, ToastAndroid} from 'react-native';
-import {Button} from 'react-native-paper';
+import {Alert, StyleSheet, ToastAndroid, View, Image} from 'react-native';
+import {Button, Dialog, Portal, Text, ProgressBar} from 'react-native-paper';
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
-import {useState} from 'react';
-import {
-  launchCameraAsync,
-  useCameraPermissions,
-  PermissionStatus,
-  ImagePickerAsset,
-} from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
-import {StorageAccessFramework as SAF} from 'expo-file-system';
 import {serverIPP} from '../values/strings';
 
 export default function UploadScreen() {
   const [cameraPermissionInfo, requestCameraPermission] =
-    useCameraPermissions();
+    ImagePicker.useCameraPermissions();
   const [mediaPermissionInfo, requestMediaPermission] =
     MediaLibrary.usePermissions();
-  const [pickedImage, setPickedImage] = useState(null);
+  const [pickedImage, setPickedImage] = React.useState<
+    ImagePicker.ImagePickerAsset[] | null
+  >(null);
+  const [uploadingVisible, setUploadingVisible] = React.useState(false);
+  const [uploadStatus, setUploadStatus] = React.useState(3);
+  const [uploadPercentage, setUploadPercentage] = React.useState('');
+  const [uploadTask, setUploadTask] = React.useState<
+    FileSystem.UploadTask | undefined
+  >();
 
-  const uploadImage = async () => {};
+  const getAndUploadImage = async () => {
+    if (pickedImage) {
+      setUploadingVisible(true);
+      setUploadStatus(1); // 正在写入
+      setUploadPercentage('0');
+      console.log('\n-------------------------------');
+      await writeImage()
+        .then(async asset => {
+          console.log('文件信息: ' + JSON.stringify(asset, null, 3));
+          console.log('开始上传...');
+          setUploadStatus(2); // 正在上传
+          await uploadImage(asset.uri).then(async () => {
+            setUploadTask(undefined);
+            setUploadStatus(3); // 上传成功
+            // clearCache();
+          });
+        })
+        .catch(e => Alert.alert('上传失败', e));
+    } else {
+      ToastAndroid.showWithGravity(
+        '请先选择或拍摄图片',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
+    }
+  };
 
-  const uploadImage_ = async (imageUrl: string) => {
-    console.log('start!');
-    // console.log(pickedImage[0].uri);
-    // let page = await MediaLibrary.getAssetsAsync({
-    //   album: await MediaLibrary.getAlbumAsync('BlaCash'),
-    // });
-    // MediaLibrary.getAssetInfoAsync(page.assets[0])
-    //   .then(res => console.log(res))
-    //   .catch(e => console.error(e));
-
-    FileSystem.uploadAsync(
+  const uploadImage = async (imageUrl: string) => {
+    let task = await FileSystem.createUploadTask(
       `http://${serverIPP}/imgUrl`,
       imageUrl,
-
       {
         fieldName: 'files',
         // httpMethod: 'PATCH',
         httpMethod: 'POST',
         uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-        // uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
       },
-    )
-      .then(res => {
-        console.log(res.body);
-      })
-      .catch(e => console.error(e));
+      res => {
+        let percentage = (
+          (res.totalBytesSent / res.totalBytesExpectedToSend) *
+          100
+        ).toFixed(0);
+
+        setUploadPercentage(percentage);
+      },
+    );
+    setUploadTask(task);
+    if (task) {
+      await task
+        .uploadAsync()
+        .then(res => {
+          if (res) {
+            console.log(
+              '上传信息: ' + JSON.stringify(JSON.parse(res.body), null, 3),
+            );
+            console.log('上传成功');
+            ToastAndroid.showWithGravity(
+              '上传成功',
+              ToastAndroid.SHORT,
+              ToastAndroid.BOTTOM,
+            );
+          } else {
+            ToastAndroid.showWithGravity(
+              '上传失败',
+              ToastAndroid.SHORT,
+              ToastAndroid.BOTTOM,
+            );
+          }
+        })
+        .catch(e => console.error(e));
+    } else {
+      console.log('创建任务失败');
+    }
   };
 
   async function verifyCameraPermission() {
-    if (cameraPermissionInfo.status === PermissionStatus.UNDETERMINED) {
+    if (
+      // cameraPermissionInfo.status === ImagePicker.PermissionStatus.UNDETERMINED
+      cameraPermissionInfo?.status === ImagePicker.PermissionStatus.UNDETERMINED
+    ) {
       const permissionResponse = await requestCameraPermission();
 
       return permissionResponse.granted;
     }
-    if (cameraPermissionInfo.status === PermissionStatus.DENIED) {
+    if (cameraPermissionInfo?.status === ImagePicker.PermissionStatus.DENIED) {
       Alert.alert(
         'Insufficient permission!',
         'You need to grant camera access to use this app',
@@ -75,76 +123,49 @@ export default function UploadScreen() {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(JSON.stringify(result, null, 4));
+    // console.log(JSON.stringify(result, null, 4));
 
     if (!result.canceled) {
       setPickedImage(result.assets);
     }
   };
 
-  const readAssets = async () => {
-    let album = await MediaLibrary.getAlbumAsync('BlaCash');
-    if (album) {
-      MediaLibrary.getAssetsAsync({
-        album: album,
-      })
-        .then(res =>
-          ToastAndroid.showWithGravity(
-            `相册中有${res.totalCount}张图片`,
-            ToastAndroid.SHORT,
-            ToastAndroid.BOTTOM,
-          ),
-        )
-        .catch(e => console.warn(e));
-    } else {
-      ToastAndroid.showWithGravity(
-        '相册无图片',
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM,
-      );
-    }
-  };
-  // FileSystem.documentDirectory + image.fileName,
+  const writeImage = async (): Promise<MediaLibrary.Asset> => {
+    if (pickedImage) {
+      let image = pickedImage[0];
+      if (!mediaPermissionInfo?.granted) {
+        await requestMediaPermission()
+          .then(res => console.log(res))
+          .catch(e => console.warn('warn3: ' + e));
+      }
 
-  const writeImage = async (image: ImagePickerAsset) => {
-    // const permissions = await SAF.requestDirectoryPermissionsAsync();
-    // if (!permissions.granted) {
-    //   return;
-    // }
-    // const {directoryUri} = permissions;
-    // const filesInRoot = await SAF.readDirectoryAsync(directoryUri);
-    // const filesInNestedFolder = await SAF.readDirectoryAsync(filesInRoot[0]);
-
-    // Both values will be the same
-    // console.log({filesInRoot, filesInNestedFolder});
-    // requestDirectoryPermissionsAsync()
-    //   .then(res => console.log(res))
-    //   .catch(e => console.log(e));
-    if (!mediaPermissionInfo?.granted) {
-      await requestMediaPermission()
-        .then(res => console.log(res))
-        .catch(e => console.log(e));
-    }
-    try {
       if (mediaPermissionInfo?.granted) {
         const asset = await MediaLibrary.createAssetAsync(image.uri);
         const album = await MediaLibrary.getAlbumAsync('BlaCash');
         if (album == null) {
-          await MediaLibrary.createAlbumAsync('BlaCash', asset, false);
+          // await MediaLibrary.createAlbumAsync('BlaCash', asset, true);
+          await MediaLibrary.createAlbumAsync('BlaCash', asset, true)
+            .then(async () => {
+              const album2 = await MediaLibrary.getAlbumAsync('BlaCash');
+              await MediaLibrary.addAssetsToAlbumAsync(
+                [asset],
+                album2?.id,
+                true,
+              ).then(() => {
+                console.log('成功创新相册并写入: ' + image.uri);
+              });
+            })
+            .catch(e => {
+              console.warn('warn2: ' + e);
+            });
         } else {
-          //TODO: Exception
           await MediaLibrary.addAssetsToAlbumAsync([asset], album, true)
             .then(() => {
-              ToastAndroid.showWithGravity(
-                '写入成功',
-                ToastAndroid.SHORT,
-                ToastAndroid.BOTTOM,
-              );
               console.log('成功写入: ' + image.uri);
             })
-            .catch(e => console.log(e));
+            .catch(e => console.warn('warn1: ' + e));
         }
+        return asset;
       } else {
         ToastAndroid.showWithGravity(
           '权限未获取',
@@ -152,24 +173,8 @@ export default function UploadScreen() {
           ToastAndroid.BOTTOM,
         );
       }
-    } catch (e) {
-      console.log(e);
     }
-    // if (image) {
-    //   let path = image.uri;
-    //   let filename = path.substring(path.lastIndexOf('/') + 1);
-    //   path = image.uri.replace(filename, '');
-    //
-    //   if (FileSystem.documentDirectory) {
-    //     SAF.createFileAsync('content://', filename, image.type as string)
-    //       .then(res => {
-    //         console.log(res);
-    //       })
-    //       .catch(e => console.log(e));
-    //   } else {
-    //     Alert.alert('上传失败', '写入文件错误');
-    //   }
-    // }
+    throw new Error('写入权限获取失败');
   };
 
   const clearCache = async () => {
@@ -180,13 +185,14 @@ export default function UploadScreen() {
         await MediaLibrary.getAlbumAsync('BlaCash'),
         true,
       )
-        .then(() =>
+        .then(() => {
           ToastAndroid.showWithGravity(
             '成功清除缓存',
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM,
-          ),
-        )
+          );
+          setPickedImage(null);
+        })
         .catch(e => console.error(e));
     } else {
       ToastAndroid.showWithGravity(
@@ -202,43 +208,73 @@ export default function UploadScreen() {
     if (!hasPermission) {
       return;
     }
-    const image = await launchCameraAsync({
+    const image = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [16, 9],
       quality: 0.5,
     });
-    setPickedImage(image.assets);
+    if (image.assets) {
+      setPickedImage(image.assets);
+    }
   }
 
   let imagePreview = <Text style={style.previewText}>未选择图片</Text>;
 
   if (pickedImage) {
-    imagePreview = (
-      <Image source={{uri: pickedImage[0].uri}} style={style.imageStyle} />
-    );
+    const {uri} = pickedImage[0];
+    imagePreview = <Image source={{uri: uri}} style={style.imageStyle} />;
   }
+
+  const uploadDialogTitle = ['无上传任务', '正在写入', '正在上传', '上传成功'];
 
   return (
     <View>
+      <Portal>
+        <Dialog
+          visible={uploadingVisible}
+          onDismiss={() => {
+            setUploadingVisible(false);
+          }}>
+          <Dialog.Title>{uploadDialogTitle[uploadStatus]}</Dialog.Title>
+          <Dialog.Content>
+            <Text variant="bodyMedium">已完成{uploadPercentage}%</Text>
+            <ProgressBar progress={parseFloat(uploadPercentage) / 100} />
+          </Dialog.Content>
+          <Dialog.Actions>
+            {uploadStatus !== 3 && (
+              <>
+                <Button
+                  onPress={() => {
+                    uploadTask?.cancelAsync().then(() => {
+                      setUploadTask(undefined);
+                      console.log('取消上传');
+                    });
+                    setUploadingVisible(false);
+                  }}>
+                  取消
+                </Button>
+                <Button onPress={() => setUploadingVisible(false)}>隐藏</Button>
+              </>
+            )}
+            {uploadStatus === 3 && (
+              <>
+                <Button
+                  onPress={() => {
+                    setUploadingVisible(false);
+                  }}>
+                  完成
+                </Button>
+              </>
+            )}
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+
       <View style={style.imagePreviewContainer}>{imagePreview}</View>
       <Button onPress={cameraPressHandler}>从相机拍摄</Button>
       <Button onPress={pickImage}>从相册选择</Button>
-      <Button onPress={uploadImage}>完整上传流程</Button>
-      <Button
-        onPress={() => {
-          writeImage(pickedImage[0]).catch(e => console.log(e));
-        }}>
-        写入缓存相册
-      </Button>
-      <Button onPress={readAssets}>读取缓存相册</Button>
-      <Button
-        onPress={() => {
-          // uploadImage(pickedImage[0].uri);
-          uploadImage_(FileSystem.documentDirectory + 'small.mp4').then(() => {
-            console.log('Upload finish');
-          });
-        }}>
-        上传至服务器
+      <Button onPress={getAndUploadImage} disabled={uploadTask !== undefined}>
+        上传所选图片
       </Button>
       <Button onPress={clearCache}>清除缓存相册</Button>
     </View>
