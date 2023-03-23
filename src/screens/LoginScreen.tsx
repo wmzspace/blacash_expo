@@ -95,8 +95,7 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
   const keyboardVerticalOffset = 60;
 
   return (
-    <View style={LoginScreenStyles.container}>
-      <KeyboardAvoidingView behavior="height" style={{ flex: 1 }}>
+    <KeyboardAvoidingView behavior='height' style={LoginScreenStyles.container}>
         <StatusBar backgroundColor="#625B71" barStyle="light-content" />
         <View style={LoginScreenStyles.header}>
           <Text style={LoginScreenStyles.text_header}>Welcome back! 😊</Text>
@@ -186,8 +185,7 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
             </TouchableOpacity>
           </View>
         </AnimatedView>
-      </KeyboardAvoidingView>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

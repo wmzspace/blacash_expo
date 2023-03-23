@@ -114,8 +114,7 @@ const SignUpScreen: React.FunctionComponent<ISignUpScreenProps> = ({
   const keyboardVerticalOffset = 40;
 
   return (
-    <View style={LoginScreenStyles.container}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
+    <KeyboardAvoidingView behavior='height' style={LoginScreenStyles.container}>
       <StatusBar backgroundColor="#625B71" barStyle="light-content" />
       <View style={LoginScreenStyles.header}>
         <Text style={LoginScreenStyles.text_header}>Register now! 😎</Text>
@@ -222,8 +221,7 @@ const SignUpScreen: React.FunctionComponent<ISignUpScreenProps> = ({
             </TouchableOpacity>
           </View>
       </AnimatedView>
-        </KeyboardAvoidingView>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
