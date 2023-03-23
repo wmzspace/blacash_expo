@@ -279,7 +279,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage});
 const imgBaseUrl = '..';
 
-app.patch('/imgUrl', upload.single('files'), function (req, res, next) {
+app.post('/imgUrl', upload.single('files'), function (req, res, next) {
   // console.log('------------------------------');
   // console.log('start!!!');
   let files = req.file;
