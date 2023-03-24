@@ -1,22 +1,41 @@
-import {StackNavigationOptions} from '@react-navigation/stack';
-import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
+import { StackNavigationOptions } from '@react-navigation/stack';
+import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+
+import type {
+  CompositeScreenProps,
+  NavigatorScreenParams,
+} from '@react-navigation/native';
+import type { StackScreenProps } from '@react-navigation/stack';
+import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 export type RootStackParamList = {
-  Home: undefined;
-  Login: undefined;
-  Signup: undefined;
+  SplashScreen: undefined;
+  LoginScreen: undefined;
+  SignupScreen: undefined;
   // Main: any;
-  Main: {
-    email: string;
-  };
+  // Main: {
+  //   email: string;
+  // };
+  Main: NavigatorScreenParams<MainBottomTabParamList>;
   NotFound: undefined;
 };
 
-export type RootBottomTabParamList = {
+export type RootStackScreenProps<T extends keyof RootStackParamList> =
+  StackScreenProps<RootStackParamList, T>;
+
+export type MainBottomTabParamList = {
   Gallery: undefined;
+  Mine: undefined;
   Upload: undefined;
+  Message: undefined;
   Account: undefined;
 };
+
+export type MainBottomTabScreenProps<T extends keyof MainBottomTabParamList> =
+  CompositeScreenProps<
+    BottomTabScreenProps<MainBottomTabParamList, T>,
+    RootStackScreenProps<keyof RootStackParamList>
+  >;
 
 declare global {
   namespace ReactNavigation {
@@ -38,14 +57,13 @@ export type ScreenRoute2 = {
   // headerShown?: boolean;
 };
 
-
 export type FormData = {
-  username: string
-  password: string
-  walletAddress?: string
-  checkEmailInputChange: boolean
-  checkWalletInputChange?: boolean
-  secureTextEntry: boolean
-  isValidUser: boolean
-  isValidPassword: boolean
-}
+  username: string;
+  password: string;
+  walletAddress?: string;
+  checkEmailInputChange: boolean;
+  checkWalletInputChange?: boolean;
+  secureTextEntry: boolean;
+  isValidUser: boolean;
+  isValidPassword: boolean;
+};

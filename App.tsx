@@ -31,8 +31,8 @@ const CombinedDarkMD2Theme = merge(MD2DarkTheme, NavigationDarkTheme);
 
 // ==============
 // ==============
+import { NavigationContainer } from '@react-navigation/native';
 import RootStackScreen from './src/screens/RootStackScreen';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
 export default function App() {
   const [isThemeDark, setIsThemeDark] = React.useState(false);
@@ -72,17 +72,16 @@ export default function App() {
           <PaperProvider theme={theme}>
             <NavigationContainer theme={theme}>
               <RootStackScreen />
-              {/* <Stack.Navigator initialRouteName="Home">
-                {routes.map((route: any, i: number) => (
-                  <Stack.Screen
-                    key={i}
-                    name={route.name}
-                    component={route.component}
-                    options={route.options}
-                  />
-                ))} 
-
-              </Stack.Navigator> */}
+              {/*<Stack.Navigator initialRouteName="SplashScreen">*/}
+              {/*  {routes.map((route: any, i: number) => (*/}
+              {/*    <Stack.Screen*/}
+              {/*      key={i}*/}
+              {/*      name={route.name}*/}
+              {/*      component={route.component}*/}
+              {/*      options={route.options}*/}
+              {/*    />*/}
+              {/*  ))}*/}
+              {/*</Stack.Navigator>*/}
             </NavigationContainer>
           </PaperProvider>
         </PreferencesContext.Provider>

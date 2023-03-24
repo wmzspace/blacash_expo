@@ -8,19 +8,16 @@ import styles from '../../styles';
 import { checkUpdate } from '../api/version';
 
 import { StatusBar } from 'expo-status-bar';
-import { PreferencesContext } from '../context/preference';
 
-import { NativeStackScreenProps } from 'react-native-screens/native-stack';
-import { RootStackParamList } from '../types';
-type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+import { RootStackScreenProps } from '../types';
+type Props = RootStackScreenProps<'Home'>;
 
 export default function HomeScreen({ navigation }: Props) {
-  const theme = useTheme();
   // const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
   checkUpdate({ navigation });
 
-  const [isSignupBtnLoading, setIsSignupBtnLoading] = useState<boolean>(false)
-  const [isLoginBtnLoading, setIsLoginBtnLoading] = useState<boolean>(false)
+  const [isSignupBtnLoading, setIsSignupBtnLoading] = useState<boolean>(false);
+  const [isLoginBtnLoading, setIsLoginBtnLoading] = useState<boolean>(false);
 
   return (
     <>
@@ -34,7 +31,7 @@ export default function HomeScreen({ navigation }: Props) {
             fontWeight: 'bold',
             fontSize: 25,
             color: '#1C1B1F',
-            fontFamily: 'monospace'
+            fontFamily: 'monospace',
           }}>
           Welcome 👋
         </Text>
@@ -63,14 +60,14 @@ export default function HomeScreen({ navigation }: Props) {
                 fontSize: 16,
                 color: '#FFFFFF',
                 letterSpacing: 2,
-                fontFamily: 'monospace'
+                fontFamily: 'monospace',
               }}
               onPress={() => {
-                setIsLoginBtnLoading(true)
+                setIsLoginBtnLoading(true);
                 setTimeout(() => {
                   navigation.navigate('Login');
-                  setIsLoginBtnLoading(false)
-                }, 500)                
+                  setIsLoginBtnLoading(false);
+                }, 500);
               }}>
               登陆
             </Button>
@@ -90,14 +87,14 @@ export default function HomeScreen({ navigation }: Props) {
                 fontSize: 16,
                 color: '#FFFFFF',
                 letterSpacing: 2,
-                fontFamily: 'monospace'
+                fontFamily: 'monospace',
               }}
               onPress={() => {
-                setIsSignupBtnLoading(true)
+                setIsSignupBtnLoading(true);
                 setTimeout(() => {
                   navigation.navigate('Signup');
-                  setIsSignupBtnLoading(false)
-                }, 500)                
+                  setIsSignupBtnLoading(false);
+                }, 500);
               }}>
               注册
             </Button>

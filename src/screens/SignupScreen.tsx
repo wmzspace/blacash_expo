@@ -16,18 +16,17 @@ import Animated, {
   FadeInDown,
   FadeInLeft,
 } from 'react-native-reanimated';
+
 import { Modal, Portal, Button } from 'react-native-paper';
-import { FormData } from '../types';
+import { FormData, RootStackScreenProps } from '../types';
 
-export interface ISignUpScreenProps {
-  navigation: any;
-}
-
+// export interface ISignUpScreenProps {
+//   navigation: any;
+// }
+type Props = RootStackScreenProps<'SignupScreen'>;
 const AnimatedView = Animated.createAnimatedComponent(View);
 
-const SignUpScreen: React.FunctionComponent<ISignUpScreenProps> = ({
-  navigation,
-}) => {
+const SignupScreen: React.FunctionComponent<Props> = ({ navigation }) => {
   const [visible, setVisible] = React.useState<boolean>(false);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -247,4 +246,4 @@ const SignUpScreen: React.FunctionComponent<ISignUpScreenProps> = ({
   );
 };
 
-export default SignUpScreen;
+export default SignupScreen;
