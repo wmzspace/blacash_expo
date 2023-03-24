@@ -68,11 +68,11 @@ export const AuthScreenStyles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  portal: {
-    display: 'flex',
-    justifyContent: 'center'
-
-  }, 
+  modalView: {
+    justifyContent: 'center',
+    flexDirection:'row',
+    gap: 10
+  },
   modal: {
     backgroundColor: '#B58392',
     padding: 20,
@@ -80,9 +80,20 @@ export const AuthScreenStyles = StyleSheet.create({
     marginRight: width * 0.1,
     height: height * 0.3,
     width: width * 0.8,
-    borderRadius: 20
+    borderRadius: 20,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   modalText: {
     color: '#fff',
-  }
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  modalBtn: {
+    borderColor: '#FFFFFF',
+    fontSize: 14,
+    width: width * 0.3,
+  },
 });
