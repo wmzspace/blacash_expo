@@ -17,18 +17,12 @@ import Animated, {
   FadeInDown,
   FadeInLeft,
 } from 'react-native-reanimated';
-import { FormData } from '../types';
+import { FormData, RootStackScreenProps } from '../types';
 import { serverIPP } from '../values/strings';
-
-export interface ILoginScreenProps {
-  navigation: any;
-}
-
+type Props = RootStackScreenProps<'LoginScreen'>;
 const AnimatedView = Animated.createAnimatedComponent(View);
 
-const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
-  navigation,
-}) => {
+const LoginScreen: React.FunctionComponent<Props> = ({ navigation }) => {
   const [formData, setFormData] = React.useState<FormData>({
     username: '',
     password: '',
@@ -100,7 +94,7 @@ const LoginScreen: React.FunctionComponent<ILoginScreenProps> = ({
       mode: 'cors',
       //same-origin - 同源请求，跨域会报error
       //no-cors - 默认，可以请求其它域的资源，不能访问response内的属性
-      //cros - 允许跨域，可以获取第三方数据，必要条件是访问的服务允许跨域访问
+      //cors - 允许跨域，可以获取第三方数据，必要条件是访问的服务允许跨域访问
       //navigate - 支持导航的模式。该navigate值仅用于HTML导航。导航请求仅在文档之间导航时创建。
       body: `email=${formData.username}&password=${formData.password}`, // 上传到后端的数据
       headers: {

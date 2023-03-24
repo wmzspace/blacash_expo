@@ -9,16 +9,15 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {NativeStackScreenProps} from 'react-native-screens/native-stack';
-import {RootBottomTabParamList} from '../types';
-type Props = NativeStackScreenProps<RootBottomTabParamList, 'Gallery'>;
+import { MainBottomTabScreenProps } from '../types';
+type Props = MainBottomTabScreenProps<'Gallery'>;
 
-import {Searchbar, Text} from 'react-native-paper';
+import { Searchbar, Text } from 'react-native-paper';
 // import ScreenWrapper from '../@components/ScreenWrapper';
-import {globalVal, userInfo} from '../values/global';
-import {getNftImgs} from '../api/nft';
+import { globalVal, userInfo } from '../values/global';
+import { getNftImgs } from '../api/nft';
 
-export default function GalleryScreen({navigation}: Props) {
+export default function GalleryScreen({ navigation }: Props) {
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
@@ -48,13 +47,13 @@ export default function GalleryScreen({navigation}: Props) {
         }}
         // theme={theme}
       />
-      <Text style={{textAlign: 'center', marginVertical: 10, fontSize: 15}}>
+      <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
         全部作品 ({globalVal.allNfts?.length})
       </Text>
-      {globalVal.allNfts?.map(({id, url}, index) => {
+      {globalVal.allNfts?.map(({ id, url }, index) => {
         return (
           <View key={id} style={styles.item}>
-            <Image source={{uri: url}} style={styles.photo} />
+            <Image source={{ uri: url }} style={styles.photo} />
           </View>
         );
       })}

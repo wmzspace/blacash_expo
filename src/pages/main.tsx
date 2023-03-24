@@ -1,18 +1,18 @@
 import * as React from 'react';
 
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-const Tab = createBottomTabNavigator();
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+const Tab = createBottomTabNavigator<MainBottomTabScreenProps<any>>();
 
 import routes2 from '../config/routes2';
 
-import {StatusBar} from 'expo-status-bar';
-import {globalVal, userInfo} from '../values/global';
+import { StatusBar } from 'expo-status-bar';
+import { globalVal, userInfo } from '../values/global';
 
-import {NativeStackScreenProps} from 'react-native-screens/native-stack';
-import {RootStackParamList} from '../types';
-type Props = NativeStackScreenProps<RootStackParamList, 'Main'>;
+import { RootStackScreenProps } from '../types';
+import { MainBottomTabScreenProps } from '../types';
+type Props = RootStackScreenProps<'Main'>;
 
-export default function MainScreen({route}: Props) {
+export default function MainScreen({ route }: Props) {
   globalVal.uploadUrl = '';
   for (let item in route.params) {
     userInfo[item] = route.params[item];

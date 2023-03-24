@@ -17,17 +17,15 @@ import Animated, {
   FadeInLeft,
 } from 'react-native-reanimated';
 import { Modal, Portal } from 'react-native-paper';
-import { FormData } from '../types';
+import { FormData, RootStackScreenProps } from '../types';
 
-export interface ISignUpScreenProps {
-  navigation: any;
-}
-
+// export interface ISignUpScreenProps {
+//   navigation: any;
+// }
+type Props = RootStackScreenProps<'SignupScreen'>;
 const AnimatedView = Animated.createAnimatedComponent(View);
 
-const SignUpScreen: React.FunctionComponent<ISignUpScreenProps> = ({
-  navigation,
-}) => {
+const SignupScreen: React.FunctionComponent<Props> = ({ navigation }) => {
   const [visible, setVisible] = React.useState<boolean>(false);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -188,9 +186,7 @@ const SignUpScreen: React.FunctionComponent<ISignUpScreenProps> = ({
           ) : null}
         </View>
         <View style={AuthScreenStyles.button}>
-          <TouchableOpacity
-            style={AuthScreenStyles.signIn}
-            onPress={showModal}>
+          <TouchableOpacity style={AuthScreenStyles.signIn} onPress={showModal}>
             <LinearGradient
               colors={['#625B71', '#7D5260']}
               style={AuthScreenStyles.signIn}>
@@ -204,7 +200,9 @@ const SignUpScreen: React.FunctionComponent<ISignUpScreenProps> = ({
               visible={visible}
               onDismiss={hideModal}
               contentContainerStyle={AuthScreenStyles.modal}>
-              <Text style={AuthScreenStyles.modalText}>Example Modal. Click outside this area to dismiss.</Text>
+              <Text style={AuthScreenStyles.modalText}>
+                Example Modal. Click outside this area to dismiss.
+              </Text>
             </Modal>
           </Portal>
           <TouchableOpacity
@@ -233,4 +231,4 @@ const SignUpScreen: React.FunctionComponent<ISignUpScreenProps> = ({
   );
 };
 
-export default SignUpScreen;
+export default SignupScreen;

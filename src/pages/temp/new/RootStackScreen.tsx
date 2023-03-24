@@ -4,16 +4,16 @@ import LoginScreen from './LoginScreen';
 import SignupScreen from './SignupScreen';
 import SplashScreen from './SplashScreen';
 import MainScreen from '../pages/main';
-import { RootStackParamList } from '../types';
 
-// export interface IRootStackScreenProps {}
+export interface IRootStackScreenProps {}
 
-const RootStack = createStackNavigator<RootStackParamList>();
+const RootStack = createStackNavigator<any>();
 
-// const RootStackScreen: React.FunctionComponent<IRootStackScreenProps>
-const RootStackScreen: React.FunctionComponent = () => {
+const RootStackScreen: React.FunctionComponent<
+  IRootStackScreenProps
+> = props => {
   return (
-    <RootStack.Navigator initialRouteName="SplashScreen">
+    <RootStack.Navigator>
       <RootStack.Screen
         name="SplashScreen"
         component={SplashScreen}

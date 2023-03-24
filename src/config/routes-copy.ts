@@ -1,30 +1,30 @@
 import { ScreenRoute } from 'src/types';
-import SplashScreen from '../screens/SplashScreen';
-import LoginScreen from '../screens/LoginScreen';
-import SignupScreen from '../screens/SignupScreen';
+import HomeScreen from '../pages/home';
+import LoginScreen from '../pages/login';
+import SignupScreen from '../pages/signup';
 import MainScreen from '../pages/main';
 
 const routes: ScreenRoute[] = [
   {
-    name: 'SplashScreen',
-    component: SplashScreen,
+    name: 'Home',
+    component: HomeScreen,
     options: {
       headerShown: false,
     },
   },
   {
-    name: 'LoginScreen',
+    name: 'Login',
     component: LoginScreen,
     options: {
-      headerShown: false,
+      headerShown: true,
       headerTitleAlign: 'center',
     },
   },
   {
-    name: 'SignupScreen',
+    name: 'Signup',
     component: SignupScreen,
     options: {
-      headerShown: false,
+      headerShown: true,
       headerTitleAlign: 'center',
     },
   },
