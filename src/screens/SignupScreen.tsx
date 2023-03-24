@@ -16,7 +16,8 @@ import Animated, {
   FadeInDown,
   FadeInLeft,
 } from 'react-native-reanimated';
-import { Modal, Portal } from 'react-native-paper';
+
+import { Modal, Portal, Button } from 'react-native-paper';
 import { FormData, RootStackScreenProps } from '../types';
 
 // export interface ISignUpScreenProps {
@@ -201,8 +202,22 @@ const SignupScreen: React.FunctionComponent<Props> = ({ navigation }) => {
               onDismiss={hideModal}
               contentContainerStyle={AuthScreenStyles.modal}>
               <Text style={AuthScreenStyles.modalText}>
-                Example Modal. Click outside this area to dismiss.
+                我们希望您能提供您的位置:)
               </Text>
+              <View style={AuthScreenStyles.modalView}>
+                <Button
+                  mode="outlined"
+                  textColor="#FFFFFF"
+                  style={AuthScreenStyles.modalBtn}>
+                  跳过
+                </Button>
+                <Button
+                  mode="outlined"
+                  textColor="#FFFFFF"
+                  style={AuthScreenStyles.modalBtn}>
+                  确认
+                </Button>
+              </View>
             </Modal>
           </Portal>
           <TouchableOpacity
