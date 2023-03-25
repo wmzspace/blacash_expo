@@ -19,6 +19,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { FormData, RootStackScreenProps } from '../types';
 import { serverIPP } from '../values/strings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 type Props = RootStackScreenProps<'LoginScreen'>;
 const AnimatedView = Animated.createAnimatedComponent(View);
 
@@ -113,22 +114,42 @@ const LoginScreen: React.FunctionComponent<Props> = ({ navigation }) => {
             .text() // String
             //.blob()        // Blob/File
             //.formData()    // FormData
-            .then(responseData => {
+            .then(async responseData => {
               //从后端返回的数据(res.end())
               switch (responseData) {
                 case '-1':
                   Alert.alert('登陆失败', '该用户不存在', [
-                    { text: '确定', onPress: () => {} },
+                    {
+                      text: '确定',
+                      onPress: () => {},
+                    },
                   ]);
                   break;
 
                 case '0':
                   Alert.alert('登陆失败', '密码错误', [
-                    { text: '确定', onPress: () => {} },
+                    {
+                      text: '确定',
+                      onPress: () => {},
+                    },
                   ]);
                   break;
                 default:
+                  // Login succeed
+
+                  await AsyncStorage.setItem('@userInfo', responseData)
+                    .then(async () => {
+                      await AsyncStorage.getItem('@userInfo').then(value => {
+                        if (!value) {
+                          console.warn('登陆状态保存异常');
+                        }
+                      });
+                    })
+                    .catch(e => console.error(e));
+
                   let resDict = JSON.parse(responseData);
+                  // console.log(resDict);
+
                   Alert.alert('登陆成功', `欢迎您: ${formData.username}`, [
                     {
                       text: '确定',

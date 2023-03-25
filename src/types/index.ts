@@ -48,6 +48,7 @@ export type ScreenRoute2 = {
   name: string;
   component: any;
   options?: BottomTabNavigationOptions;
+
   // headerShown?: boolean;
 };
 
@@ -77,4 +78,14 @@ export type Message = {
   content: string;
   id: number;
   time: string;
+};
+
+export type userInfoType = {
+  id: number;
+  email: string;
+  name: string;
+  ownedNfts: ImageNft[];
+  location: string;
+  coin: number;
+  address: string;
 };

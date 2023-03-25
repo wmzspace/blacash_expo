@@ -10,8 +10,7 @@ import { RootStackParamList } from '../types';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
-// const RootStackScreen: React.FunctionComponent<IRootStackScreenProps>
-const RootStackScreen: React.FunctionComponent = () => {
+export const RootStackScreen: React.FunctionComponent = () => {
   return (
     <RootStack.Navigator initialRouteName="SplashScreen">
       <RootStack.Screen
@@ -31,7 +30,32 @@ const RootStackScreen: React.FunctionComponent = () => {
       />
       <RootStack.Screen
         name="Main"
-        //TODO: TS ERROR
+        component={MainScreen}
+        options={{ headerShown: false }}
+      />
+    </RootStack.Navigator>
+  );
+};
+export const RootStackScreenHasLogin: React.FunctionComponent = () => {
+  return (
+    <RootStack.Navigator initialRouteName="Main">
+      <RootStack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name="SignupScreen"
+        component={SignupScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name="Main"
         component={MainScreen}
         options={{ headerShown: false }}
       />
@@ -39,4 +63,4 @@ const RootStackScreen: React.FunctionComponent = () => {
   );
 };
 
-export default RootStackScreen;
+// export default RootStackScreen;

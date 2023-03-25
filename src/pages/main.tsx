@@ -12,14 +12,25 @@ import { userInfo } from '../values/global';
 
 import { RootStackScreenProps } from '../types';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 type Props = RootStackScreenProps<'Main'>;
 
-export default function MainScreen({ route }: Props) {
+export default function MainScreen({}: Props) {
   // globalVal.uploadUrl = '';
-  for (let item in route.params) {
-    userInfo[item] = route.params[item];
-    // console.log(route.params[item]);
-  }
+  // for (let item in route.params) {
+  //   userInfo[item] = route.params[item];
+  //   // console.log(route.params[item]);
+  // }
+
+  AsyncStorage.getItem('@userInfo').then(value => {
+    if (value) {
+      let userInfo_ = JSON.parse(value);
+      for (let item in userInfo_) {
+        userInfo[item] = userInfo_[item];
+      }
+    }
+  });
+
   return (
     <>
       <StatusBar />
