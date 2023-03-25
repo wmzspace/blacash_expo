@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // const Tab = createBottomTabNavigator<MainBottomTabScreenProps<any>>();
+// import { MainBottomTabScreenProps } from '../types';
 const Tab = createBottomTabNavigator<any>();
 
 import routes2 from '../config/routes2';
@@ -10,8 +11,7 @@ import { StatusBar } from 'expo-status-bar';
 import { userInfo } from '../values/global';
 
 import { RootStackScreenProps } from '../types';
-import { MainBottomTabScreenProps } from '../types';
-import Ionicons from '@expo/vector-icons/Ionicons'
+import Ionicons from '@expo/vector-icons/Ionicons';
 type Props = RootStackScreenProps<'Main'>;
 
 export default function MainScreen({ route }: Props) {
@@ -26,30 +26,23 @@ export default function MainScreen({ route }: Props) {
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            if (route.name === 'gallery') {
-              iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
-            }
-            // if (route.name === 'gallery') {
-              //   iconName = focused
-              //     ? 'ios-information-circle'
-            //     : 'ios-information-circle-outline';
-            // } else if (route.name === 'Settings') {
-            //   iconName = focused ? 'ios-list' : 'ios-list-outline';
-            // }
-            if (route.name === 'Gallery') {
-              iconName = 'home-outline'
-            } else if (route.name === 'Mine' ){
-              iconName = 'ios-person-outline'
-            } else if (route.name === 'Upload') {
-              iconName = 'cloud-upload-outline'
-            } else if (route.name === 'Message') {
-              iconName = 'chatbubble-ellipses-outline'
-            } else {
-              iconName = 'settings-outline'
-            }
-            //@ts-ignore
-            return <Ionicons name={iconName} size={size} color={color} />;
+            return (
+              <Ionicons
+                name={
+                  route.name === 'Gallery'
+                    ? 'home-outline'
+                    : route.name === 'Mine'
+                    ? 'ios-person-outline'
+                    : route.name === 'Upload'
+                    ? 'cloud-upload-outline'
+                    : route.name === 'Message'
+                    ? 'chatbubble-ellipses-outline'
+                    : 'settings-outline'
+                }
+                size={size}
+                color={color}
+              />
+            );
           },
           tabBarActiveTintColor: '#6750A4',
           tabBarInactiveTintColor: '#939094',
