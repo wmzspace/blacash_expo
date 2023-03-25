@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { galleryScreenStyles } from '../styles/GalleryScreenStyles';
-import { ImageNft } from 'src/types';
+import { ImageNft } from '../types';
 
 export interface INFTHorizontalCardProps {
   nft: ImageNft;

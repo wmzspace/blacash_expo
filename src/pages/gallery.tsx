@@ -17,6 +17,7 @@ import { Searchbar, Text } from 'react-native-paper';
 // import { globalVal, userInfo } from '../values/global';
 import { getNftImgs } from '../api/nft';
 import NFTHorizontalCard from '../components/NFTHorizontalCard';
+import NFTVerticalCard from '../components/NFTVerticalCard';
 
 export default function GalleryScreen({}: Props) {
   const [allNfts, setAllNfts] = React.useState<ImageNft[]>();
@@ -67,14 +68,29 @@ export default function GalleryScreen({}: Props) {
           style={{
             backgroundColor: '#fff',
             elevation: 10,
-    shadowColor: '#52006A',
+            shadowColor: '#939094',
           }}>
           {allNfts?.map((nft: ImageNft) => {
             return <NFTHorizontalCard key={nft.id} nft={nft} />;
           })}
         </ScrollView>
       </View>
-      <View></View>
+      <View>
+        <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
+          详细信息
+        </Text>
+        <ScrollView
+          style={{
+            backgroundColor: '#fff',
+            elevation: 10,
+            shadowColor: '#939094',
+          }}
+        >
+          {allNfts?.map((nft: ImageNft) => (
+            <NFTVerticalCard key={nft.id} nft={nft} />
+          ))}
+        </ScrollView>
+      </View>
     </ScrollView>
   );
 }
