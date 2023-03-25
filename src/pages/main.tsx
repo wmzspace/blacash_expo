@@ -6,14 +6,14 @@ const Tab = createBottomTabNavigator<MainBottomTabScreenProps<any>>();
 import routes2 from '../config/routes2';
 
 import { StatusBar } from 'expo-status-bar';
-import { globalVal, userInfo } from '../values/global';
+import { userInfo } from '../values/global';
 
 import { RootStackScreenProps } from '../types';
 import { MainBottomTabScreenProps } from '../types';
 type Props = RootStackScreenProps<'Main'>;
 
 export default function MainScreen({ route }: Props) {
-  globalVal.uploadUrl = '';
+  // globalVal.uploadUrl = '';
   for (let item in route.params) {
     userInfo[item] = route.params[item];
     // console.log(route.params[item]);

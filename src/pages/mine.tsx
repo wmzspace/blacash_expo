@@ -9,20 +9,25 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {Searchbar, Text} from 'react-native-paper';
-import {userInfo} from '../values/global';
-import {getNftImgs} from '../api/nft';
+import { Searchbar, Text } from 'react-native-paper';
+import { userInfo } from '../values/global';
+import { getNftImgs } from '../api/nft';
 
 export default function MineScreen() {
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    await getNftImgs();
-    setTimeout(() => {
+    await getNftImgs().then(() => {
+      // Refresh end
       setRefreshing(false);
-    }, 1000);
-    // getNftImgs();
+    });
+    setTimeout(() => {
+      // Refresh timeout
+      setRefreshing(false);
+    }, 3000);
   }, []);
+
+  React.useState(onRefresh);
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const onChangeSearch = (query: React.SetStateAction<string>) =>
@@ -43,13 +48,13 @@ export default function MineScreen() {
         }}
         // theme={theme}
       />
-      <Text style={{textAlign: 'center', marginVertical: 10, fontSize: 15}}>
+      <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
         已拥有作品 ({userInfo.ownedNfts?.length})
       </Text>
-      {userInfo.ownedNfts?.map(({id, url}, index) => {
+      {userInfo.ownedNfts?.map(nft => {
         return (
-          <View key={id} style={styles.item}>
-            <Image source={{uri: url}} style={styles.photo} />
+          <View key={nft?.id} style={styles.item}>
+            <Image source={{ uri: nft?.url }} style={styles.photo} />
           </View>
         );
       })}
