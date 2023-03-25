@@ -44,6 +44,7 @@ export default function GalleryScreen({}: Props) {
 
   return (
     <ScrollView
+      style={{ flex: 1 }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
@@ -57,25 +58,23 @@ export default function GalleryScreen({}: Props) {
         style={{ marginHorizontal: 10, marginVertical: 5 }}
         // theme={theme}
       />
-      <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
-        全部作品 ({allNfts?.length})
-      </Text>
-      <ScrollView
-        horizontal={true}
-        style={{
-          width: Dimensions.get('window').width,
-        }}
-      > 
+      <View>
+        <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
+          全部作品 ({allNfts?.length})
+        </Text>
+        <ScrollView
+          horizontal={true}
+          style={{
+            backgroundColor: '#fff',
+          }}>
+          {allNfts?.map((nft: ImageNft) => {
+            return <NFTCard key={nft.id} nft={nft} />;
+          })}
+        </ScrollView>
+      </View>
+      <View>
         
-      {allNfts?.map((nft: ImageNft) => {
-        return (
-          // <View key={id} style={styles.item}>
-          //   <Image source={{ uri: url }} style={styles.photo} />
-          // </View>
-          <NFTCard key={nft.id} nft={nft} />
-        );
-      })}
-      </ScrollView>
+      </View>
     </ScrollView>
   );
 }

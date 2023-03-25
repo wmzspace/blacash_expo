@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import { galleryScreenStyles } from '../styles/GalleryScreenStyles';
 import { ImageNft } from 'src/types';
 
 export interface INFTCardProps {
@@ -9,21 +10,13 @@ export interface INFTCardProps {
 const NFTCard: React.FunctionComponent<INFTCardProps> = ({ nft }) => {
   return (
     <View
-      style={{
-        height: Dimensions.get('window').width / 2,
-        width: '50%',
-        padding: 4,
-        flexWrap: 'wrap',
-      }}>
+      style={galleryScreenStyles.item}>
       <Image
         source={{ uri: nft.url }}
-        style={{
-          flex: 1,
-          resizeMode: 'cover',
-        }}
+        style={galleryScreenStyles.itemPhoto}
+        resizeMode='cover'
       />
-      <Text>{nft.id}</Text>
-      <Text>{nft.nftname}</Text>
+      <Text style={galleryScreenStyles.itemText}>No.{nft.id} {nft.nftname}</Text>
     </View>
   );
 };
