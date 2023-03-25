@@ -3,11 +3,11 @@ import { View, Text, Image } from 'react-native';
 import { galleryScreenStyles } from '../styles/GalleryScreenStyles';
 import { ImageNft } from 'src/types';
 
-export interface INFTCardProps {
+export interface INFTHorizontalCardProps {
   nft: ImageNft;
 }
 
-const NFTCard: React.FunctionComponent<INFTCardProps> = ({ nft }) => {
+const NFTHorizontalCard: React.FunctionComponent<INFTHorizontalCardProps> = ({ nft }) => {
   return (
     <View
       style={galleryScreenStyles.item}>
@@ -21,4 +21,4 @@ const NFTCard: React.FunctionComponent<INFTCardProps> = ({ nft }) => {
   );
 };
 
-export default NFTCard;
+export default NFTHorizontalCard;

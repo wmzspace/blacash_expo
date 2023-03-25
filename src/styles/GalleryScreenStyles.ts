@@ -17,6 +17,8 @@ export const galleryScreenStyles = StyleSheet.create({
     backgroundColor: '#B58392',
     padding: 10,
     borderRadius: 10,
+    elevation: 10,
+    shadowColor: '#939094',
   },
   itemPhoto: {
     width: 200,

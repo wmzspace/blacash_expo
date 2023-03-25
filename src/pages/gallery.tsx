@@ -16,7 +16,7 @@ import { Searchbar, Text } from 'react-native-paper';
 // import ScreenWrapper from '../@components/ScreenWrapper';
 // import { globalVal, userInfo } from '../values/global';
 import { getNftImgs } from '../api/nft';
-import NFTCard from '../components/NFTCard';
+import NFTHorizontalCard from '../components/NFTHorizontalCard';
 
 export default function GalleryScreen({}: Props) {
   const [allNfts, setAllNfts] = React.useState<ImageNft[]>();
@@ -66,15 +66,15 @@ export default function GalleryScreen({}: Props) {
           horizontal={true}
           style={{
             backgroundColor: '#fff',
+            elevation: 10,
+    shadowColor: '#52006A',
           }}>
           {allNfts?.map((nft: ImageNft) => {
-            return <NFTCard key={nft.id} nft={nft} />;
+            return <NFTHorizontalCard key={nft.id} nft={nft} />;
           })}
         </ScrollView>
       </View>
-      <View>
-        
-      </View>
+      <View></View>
     </ScrollView>
   );
 }
