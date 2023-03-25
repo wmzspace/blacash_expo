@@ -6,17 +6,20 @@ import {
   StatusBar,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Platform,
+  PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import { AuthScreenStyles } from '../styles/AuthScreenStyles';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import Geolocation from 'react-native-geolocation-service';
 import Animated, {
   BounceIn,
   FadeInDown,
   FadeInLeft,
 } from 'react-native-reanimated';
-
 import { Modal, Portal, Button } from 'react-native-paper';
 import { FormData, RootStackScreenProps } from '../types';
 
@@ -58,6 +61,131 @@ const SignupScreen: React.FunctionComponent<Props> = ({ navigation }) => {
         isValidUser: false,
       });
     }
+  };
+
+  const [currentLongitude, setCurrentLongitude] = React.useState<string>('');
+  const [currentLatitude, setCurrentLatitude] = React.useState<string>('');
+  const [location, setLocation] = React.useState<string>('');
+  const [province, setProvince] = React.useState('');
+  const [city, setCity] = React.useState('');
+  const [district, setDistrict] = React.useState('');
+  const [locationStatus, setLocationStatus] =
+    React.useState<string>('点击左侧"位置"获取');
+
+  const requestLocationPermission = async () => {
+    if (Platform.OS === 'ios') {
+      getOneTimeLocation();
+      // subscribeLocationLocation();
+    } else {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            buttonNegative: '拒绝',
+            buttonNeutral: '忽略',
+            buttonPositive: '同意',
+            title: '定位请求',
+            message: 'Blacash需要申请系统的定位权限',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          //To Check, If Permission is granted
+          getOneTimeLocation();
+
+          // subscribeLocationLocation();
+        } else {
+          setLocationStatus('权限被拒绝');
+          Alert.alert('定位失败', '用户拒绝定位权限, 请尝试在设置中开启权限');
+        }
+      } catch (err) {
+        console.warn('catch: ' + err);
+      }
+    }
+  };
+
+  const getOneTimeLocation = () => {
+    setLocationStatus('定位获取中 ...');
+    Geolocation.getCurrentPosition(pos => {
+      console.log(pos);
+    });
+    Geolocation.getCurrentPosition(
+      //Will give you the current location
+      position => {
+        //getting the Longitude from the location json
+        const currentLongitude_ = JSON.stringify(position.coords.longitude);
+
+        //getting the Latitude from the location json
+        const currentLatitude_ = JSON.stringify(position.coords.latitude);
+
+        setLocationStatus('点击左侧"位置"获取');
+
+        //Setting Longitude state
+        setCurrentLongitude(currentLongitude_);
+
+        //Setting Longitude state
+        setCurrentLatitude(currentLatitude_);
+        // console.log(`${currentLongitude},${currentLatitude}`)
+        geocoder(currentLongitude_, currentLatitude_);
+      },
+      error => {
+        if (error.message === 'No location provider available.') {
+          setLocationStatus('点击左侧"位置"刷新)');
+          Alert.alert('定位失败', '请检查GPS是否开启');
+        } else if (error.message === 'Location permission was not granted.') {
+          setLocationStatus('点击左侧"位置"刷新)');
+          Alert.alert('定位失败', '用户拒绝定位权限, 请尝试在设置中开启权限');
+        } else {
+          setLocationStatus(error.message);
+          Alert.alert('定位失败', error.message);
+        }
+        return 0;
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 30000,
+        maximumAge: 1000,
+      },
+    );
+  };
+
+  const geocoder = (currentLongitude_: String, currentLatitude_: String) => {
+    fetch(
+      `https://restapi.amap.com/v3/geocode/regeo?output=json&location=${currentLongitude_},${currentLatitude_}&key=6db2f5900df5e3f3be3c2ef4cfb39f2a&radius=1000&extensions=all`,
+      {
+        method: 'GET',
+      },
+    )
+      .then(res => {
+        if (res.ok) {
+          res.json().then(responseData => {
+            console.log(responseData.regeocode.formatted_address);
+            console.log(responseData.regeocode.addressComponent.province);
+            console.log(responseData.regeocode.addressComponent.city);
+            console.log(responseData.regeocode.addressComponent.district);
+            // setFormattedAddress(responseData.regeocode.formatted_address);
+            setProvince(responseData.regeocode.addressComponent.province);
+            setCity(responseData.regeocode.addressComponent.city);
+            setDistrict(responseData.regeocode.addressComponent.district);
+            setLocation(
+              responseData.regeocode.addressComponent.province +
+                ' ' +
+                responseData.regeocode.addressComponent.city +
+                ' ' +
+                responseData.regeocode.addressComponent.district,
+            );
+          });
+        } else {
+          Alert.alert('请求失败', 'error', [
+            {text: '确定', onPress: () => console.log('OK Pressed!')},
+          ]);
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+        Alert.alert('请求失败', err, [
+          {text: '确定', onPress: () => console.log('OK Pressed!')},
+        ]);
+      });
   };
 
   const handleWalletInputChange = (val: any) => {
@@ -214,6 +342,7 @@ const SignupScreen: React.FunctionComponent<Props> = ({ navigation }) => {
                 <Button
                   mode="outlined"
                   textColor="#FFFFFF"
+                  onPress={requestLocationPermission}
                   style={AuthScreenStyles.modalBtn}>
                   确认
                 </Button>

@@ -16,6 +16,8 @@ import { Searchbar, Text } from 'react-native-paper';
 // import ScreenWrapper from '../@components/ScreenWrapper';
 // import { globalVal, userInfo } from '../values/global';
 import { getNftImgs } from '../api/nft';
+import NFTHorizontalCard from '../components/NFTHorizontalCard';
+import NFTVerticalCard from '../components/NFTVerticalCard';
 
 export default function GalleryScreen({}: Props) {
   const [allNfts, setAllNfts] = React.useState<ImageNft[]>();
@@ -43,6 +45,7 @@ export default function GalleryScreen({}: Props) {
 
   return (
     <ScrollView
+      style={{ flex: 1 }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
@@ -53,56 +56,79 @@ export default function GalleryScreen({}: Props) {
         onSubmitEditing={() => {
           Alert.alert('搜索功能暂未启用');
         }}
+        style={{ marginHorizontal: 10, marginVertical: 5 }}
         // theme={theme}
       />
-      <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
-        全部作品 ({allNfts?.length})
-      </Text>
-      {allNfts?.map(({ id, url }) => {
-        return (
-          <View key={id} style={styles.item}>
-            <Image source={{ uri: url }} style={styles.photo} />
-          </View>
-        );
-      })}
+      <View>
+        <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
+          全部作品 ({allNfts?.length})
+        </Text>
+        <ScrollView
+          horizontal={true}
+          style={{
+            backgroundColor: '#fff',
+            elevation: 10,
+            shadowColor: '#939094',
+          }}>
+          {allNfts?.map((nft: ImageNft) => {
+            return <NFTHorizontalCard key={nft.id} nft={nft} />;
+          })}
+        </ScrollView>
+      </View>
+      <View>
+        <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
+          详细信息
+        </Text>
+        <ScrollView
+          style={{
+            backgroundColor: '#fff',
+            elevation: 10,
+            shadowColor: '#939094',
+          }}
+        >
+          {allNfts?.map((nft: ImageNft) => (
+            <NFTVerticalCard key={nft.id} nft={nft} />
+          ))}
+        </ScrollView>
+      </View>
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  ...Platform.select({
-    web: {
-      content: {
-        // there is no 'grid' type in RN :(
-        display: 'grid' as 'none',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-        gridRowGap: '8px',
-        gridColumnGap: '8px',
-        padding: 8,
-      },
-      item: {
-        width: '100%',
-        height: 150,
-      },
-    },
-    default: {
-      content: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        padding: 4,
-      },
-      item: {
-        height: Dimensions.get('window').width / 2,
-        width: '50%',
-        padding: 4,
-      },
-    },
-  }),
-  photo: {
-    flex: 1,
-    resizeMode: 'cover',
-  },
-  screen: {
-    flex: 1,
-  },
-});
+// const styles = StyleSheet.create({
+//   ...Platform.select({
+//     web: {
+//       content: {
+//         // there is no 'grid' type in RN :(
+//         display: 'grid' as 'none',
+//         gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+//         gridRowGap: '8px',
+//         gridColumnGap: '8px',
+//         padding: 8,
+//       },
+//       item: {
+//         width: '100%',
+//         height: 150,
+//       },
+//     },
+//     default: {
+//       content: {
+//         flexDirection: 'row',
+//         flexWrap: 'wrap',
+//         padding: 4,
+//       },
+//       item: {
+//         height: Dimensions.get('window').width / 2,
+//         width: '50%',
+//         padding: 4,
+//       },
+//     },
+//   }),
+//   photo: {
+//     flex: 1,
+//     resizeMode: 'cover',
+//   },
+//   screen: {
+//     flex: 1,
+//   },
+// });
