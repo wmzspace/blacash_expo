@@ -13,7 +13,7 @@ var fs = require('fs'); // 引入fs模块
 
 var app = express();
 // 引用
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 //设置跨域访问
 app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -264,7 +264,16 @@ app.get('/nftimg', function (req, res) {
     res.end(JSON.stringify(result));
   });
 });
-// });
+app.get('/message', function (req, res) {
+  connection.query('select * from message', function (err, result) {
+    if (err) {
+      console.log('[SELECT ERROR] - ', err.message);
+      return;
+    }
+
+    res.end(JSON.stringify(result));
+  });
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -276,7 +285,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({storage: storage});
+const upload = multer({ storage: storage });
 const imgBaseUrl = '..';
 
 app.post('/imgUrl', upload.single('files'), function (req, res, next) {

@@ -37,12 +37,6 @@ export type MainBottomTabScreenProps<T extends keyof MainBottomTabParamList> =
     RootStackScreenProps<keyof RootStackParamList>
   >;
 
-declare global {
-  namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
-  }
-}
-
 export type ScreenRoute = {
   name: string;
   component: any;
@@ -66,4 +60,21 @@ export type FormData = {
   secureTextEntry: boolean;
   isValidUser: boolean;
   isValidPassword: boolean;
+};
+
+export type ImageNft = {
+  certificate: string;
+  id: number;
+  nftname: string;
+  owner: string;
+  price: number;
+  state: number;
+  url: string;
+};
+
+export type Message = {
+  address: string;
+  content: string;
+  id: number;
+  time: string;
 };

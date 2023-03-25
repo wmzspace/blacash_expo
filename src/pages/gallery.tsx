@@ -9,29 +9,37 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { MainBottomTabScreenProps } from '../types';
+import { ImageNft, MainBottomTabScreenProps } from '../types';
 type Props = MainBottomTabScreenProps<'Gallery'>;
 
 import { Searchbar, Text } from 'react-native-paper';
 // import ScreenWrapper from '../@components/ScreenWrapper';
-import { globalVal, userInfo } from '../values/global';
+// import { globalVal, userInfo } from '../values/global';
 import { getNftImgs } from '../api/nft';
 
-export default function GalleryScreen({ navigation }: Props) {
+export default function GalleryScreen({}: Props) {
+  const [allNfts, setAllNfts] = React.useState<ImageNft[]>();
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    await getNftImgs();
+    await getNftImgs()
+      .then(res => {
+        setAllNfts(res);
+        // Refresh end
+        setRefreshing(false);
+      })
+      .catch(e => console.error(e));
     setTimeout(() => {
+      // Refresh timeout
       setRefreshing(false);
-    }, 1500);
+    }, 3000);
   }, []);
+
+  React.useState(onRefresh);
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const onChangeSearch = (query: React.SetStateAction<string>) =>
     setSearchQuery(query);
-
-  React.useState(onRefresh);
 
   return (
     <ScrollView
@@ -48,9 +56,9 @@ export default function GalleryScreen({ navigation }: Props) {
         // theme={theme}
       />
       <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
-        全部作品 ({globalVal.allNfts?.length})
+        全部作品 ({allNfts?.length})
       </Text>
-      {globalVal.allNfts?.map(({ id, url }, index) => {
+      {allNfts?.map(({ id, url }) => {
         return (
           <View key={id} style={styles.item}>
             <Image source={{ uri: url }} style={styles.photo} />
