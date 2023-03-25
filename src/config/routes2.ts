@@ -14,12 +14,14 @@ const routes2: ScreenRoute2[] = [
       headerTitleAlign: 'center',
       headerStyle: {
         backgroundColor: '#958DA5',
+        height: 100,
       },
       headerTitleStyle: {
         color: '#fff',
         fontFamily: 'monospace',
         letterSpacing: 1,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingBottom: 10,
       }
     },
   },
@@ -31,12 +33,14 @@ const routes2: ScreenRoute2[] = [
       headerTitleAlign: 'center',
       headerStyle: {
         backgroundColor: '#958DA5',
+        height: 100,
       },
       headerTitleStyle: {
         color: '#fff',
         fontFamily: 'monospace',
         letterSpacing: 1,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingBottom: 10,
       }
     },
   },
@@ -48,12 +52,14 @@ const routes2: ScreenRoute2[] = [
       headerTitleAlign: 'center',
       headerStyle: {
         backgroundColor: '#958DA5',
+        height: 100,
       },
       headerTitleStyle: {
         color: '#fff',
         fontFamily: 'monospace',
         letterSpacing: 1,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingBottom: 10,
       }
     },
   },
@@ -65,12 +71,14 @@ const routes2: ScreenRoute2[] = [
       headerTitleAlign: 'center',
       headerStyle: {
         backgroundColor: '#958DA5',
+        height: 100,
       },
       headerTitleStyle: {
         color: '#fff',
         fontFamily: 'monospace',
         letterSpacing: 1,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingBottom: 10,
       }
     },
   },
@@ -82,12 +90,14 @@ const routes2: ScreenRoute2[] = [
       headerTitleAlign: 'center',
       headerStyle: {
         backgroundColor: '#958DA5',
+        height: 100,
       },
       headerTitleStyle: {
         color: '#fff',
         fontFamily: 'monospace',
         letterSpacing: 1,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingBottom: 10,
       }
     },
   },
