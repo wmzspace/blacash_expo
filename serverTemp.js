@@ -357,6 +357,20 @@ app.post('/upload', (req, res) => {
       res.end(JSON.stringify(reqJSON));
     },
   );
+
+  connection.query(
+    'insert into message( address, time, content) values(?,?,?)',
+    [
+      reqJSON.address,
+      new Date(Date.now()),
+      `作品《${reqJSON.nftName}》正在审核中，审核成功后将自动上链`,
+    ],
+    function (err, result) {
+      if (err) {
+        console.log('[SELECT ERROR] - ', err.message);
+      }
+    },
+  );
 });
 
 // app.post('uploadImg', (req, res) => {
