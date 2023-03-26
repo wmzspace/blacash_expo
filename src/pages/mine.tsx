@@ -5,13 +5,15 @@ import {
   Image,
   Platform,
   RefreshControl,
-  ScrollView,
   StyleSheet,
+  FlatList,
   View,
+  ScrollView,
 } from 'react-native';
 import { Searchbar, Text } from 'react-native-paper';
 import { userInfo } from '../values/global';
 import { getNftImgs } from '../api/nft';
+import NFTMine from '../components/NFTMine';
 
 export default function MineScreen() {
   const [refreshing, setRefreshing] = React.useState(false);
@@ -32,10 +34,11 @@ export default function MineScreen() {
   const [searchQuery, setSearchQuery] = React.useState('');
   const onChangeSearch = (query: React.SetStateAction<string>) =>
     setSearchQuery(query);
-
+ 
   // console.log(nftImgs);
   return (
     <ScrollView
+      style={{ flex: 1 }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
@@ -43,6 +46,7 @@ export default function MineScreen() {
         placeholder="搜索"
         onChangeText={onChangeSearch}
         value={searchQuery}
+        style={{ marginHorizontal: 10, marginVertical: 5 }}
         onSubmitEditing={() => {
           Alert.alert('搜索功能暂未启用');
         }}
@@ -51,13 +55,15 @@ export default function MineScreen() {
       <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
         已拥有作品 ({userInfo.ownedNfts?.length})
       </Text>
-      {userInfo.ownedNfts?.map(nft => {
-        return (
-          <View key={nft?.id} style={styles.item}>
-            <Image source={{ uri: nft?.url }} style={styles.photo} />
-          </View>
-        );
-      })}
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={userInfo.ownedNfts}
+          horizontal
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item }) => <NFTMine nft={item} />}
+        />
+        
+      </View>
     </ScrollView>
   );
 }
