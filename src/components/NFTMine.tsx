@@ -17,7 +17,11 @@ const NFTMine: React.FunctionComponent<IMinNFTProps> = ({ nft }) => {
         paddingVertical: 30,
       }}>
       <Image source={{ uri: nft.url }} style={mineScreenStyles.img} />
-      <Text>{nft.nftname}</Text>
+      <Text style={{
+        fontWeight: 'bold',
+        fontFamily: 'monospace',
+        color: '#fff',
+      }} >{nft.nftname}</Text>
     </View>
   );
 };

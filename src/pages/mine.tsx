@@ -57,8 +57,8 @@ export default function MineScreen() {
         }}
         // theme={theme}
       />
-      <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
-        已拥有作品 ({userInfo.ownedNfts?.length})
+      <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15, color: '#B58392',fontWeight: 'bold', letterSpacing: 2 }}>
+        😎 已拥有作品 ({userInfo.ownedNfts?.length})
       </Text>
       <View style={{ flex: 1, position: 'relative' }}>
         <View style={mineScreenStyles.absoluteFillObject}>

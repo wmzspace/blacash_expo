@@ -11,6 +11,11 @@ export const mineScreenStyles = StyleSheet.create({
         height: imageHeight,
         resizeMode: 'cover',
         borderRadius: 16,
+        shadowColor: '#000',
+        shadowOpacity: 0.5,
+        shadowOffset: { width: 0, height: 0 },
+        shadowRadius: 20,
+        marginBottom: 10,
     },
     absoluteFillObject: {
         position: 'absolute',
