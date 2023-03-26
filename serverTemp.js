@@ -306,6 +306,32 @@ app.post('/imgUrl', upload.single('files'), function (req, res, next) {
   // console.log(req);
 });
 
+// app.post('/upload', (req, res) => {
+//   let reqJSON;
+//   for (let key in JSON.parse(JSON.stringify(req.body))) {
+//     reqJSON = JSON.parse(key);
+//     break;
+//   }
+//   let addSqlParams = [
+//     reqJSON.url,
+//     reqJSON.nftName,
+//     reqJSON.nftDescription,
+//     reqJSON.owner,
+//     reqJSON.fee,
+//   ];
+//
+//   connection.query(
+//     'insert into appsubmit( url, nftname, nftdescription, owner, fee) values(?,?,?,?,?)',
+//     addSqlParams,
+//     function (err, result) {
+//       if (err) {
+//         console.log('[SELECT ERROR] - ', err.message);
+//         return;
+//       }
+//       res.end(JSON.stringify(reqJSON));
+//     },
+//   );
+// });
 app.post('/upload', (req, res) => {
   let reqJSON;
   for (let key in JSON.parse(JSON.stringify(req.body))) {
@@ -320,10 +346,8 @@ app.post('/upload', (req, res) => {
     reqJSON.fee,
   ];
 
-  // console.log(rootDir + relativeDir);
-  // let addSqlParams = [rootDir + relativeDir, 'temp', 'temp', 'temp', 1.0];
   connection.query(
-    'insert into appsubmit( url, nftname, nftdescription, owner, fee) values(?,?,?,?,?)',
+    'insert into nftimg( url, nftname, nftdescription, owner, price) values(?,?,?,?,?)',
     addSqlParams,
     function (err, result) {
       if (err) {
@@ -331,6 +355,20 @@ app.post('/upload', (req, res) => {
         return;
       }
       res.end(JSON.stringify(reqJSON));
+    },
+  );
+
+  connection.query(
+    'insert into message( address, time, content) values(?,?,?)',
+    [
+      reqJSON.address,
+      new Date(Date.now()),
+      `作品《${reqJSON.nftName}》正在审核中，审核成功后将自动上链`,
+    ],
+    function (err, result) {
+      if (err) {
+        console.log('[SELECT ERROR] - ', err.message);
+      }
     },
   );
 });

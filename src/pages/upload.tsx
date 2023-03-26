@@ -50,6 +50,7 @@ export default function UploadScreen() {
         owner: userInfo.email,
         fee: fee,
         remark: remark,
+        address: userInfo.address,
       }),
       headers: {
         Accept: 'application/json',
