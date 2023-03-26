@@ -1,14 +1,5 @@
 import * as React from 'react';
-import {
-  Alert,
-  Dimensions,
-  Image,
-  Platform,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Alert, RefreshControl, ScrollView, View } from 'react-native';
 import { ImageNft, MainBottomTabScreenProps } from '../types';
 type Props = MainBottomTabScreenProps<'Gallery'>;
 
@@ -26,7 +17,8 @@ export default function GalleryScreen({}: Props) {
     setRefreshing(true);
     await getNftImgs()
       .then(res => {
-        setAllNfts(res);
+        // Displays reviewed Nfts
+        setAllNfts(res.filter(nft => nft.state !== 0));
         // Refresh end
         setRefreshing(false);
       })
@@ -84,8 +76,7 @@ export default function GalleryScreen({}: Props) {
             backgroundColor: '#fff',
             elevation: 10,
             shadowColor: '#939094',
-          }}
-        >
+          }}>
           {allNfts?.map((nft: ImageNft) => (
             <NFTVerticalCard key={nft.id} nft={nft} />
           ))}

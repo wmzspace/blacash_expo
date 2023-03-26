@@ -51,13 +51,62 @@ export default function MineScreen() {
       <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
         已拥有作品 ({userInfo.ownedNfts?.length})
       </Text>
-      {userInfo.ownedNfts?.map(nft => {
-        return (
-          <View key={nft?.id} style={styles.item}>
-            <Image source={{ uri: nft?.url }} style={styles.photo} />
-          </View>
-        );
-      })}
+
+      <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
+        正在出售所有权(
+        {userInfo.ownedNfts?.filter(nft => nft.state === 2).length})
+      </Text>
+      {userInfo.ownedNfts
+        ?.filter(nft => nft.state === 2)
+        .map(nft => {
+          return (
+            <View key={nft?.id} style={styles.item}>
+              <Image source={{ uri: nft?.url }} style={styles.photo} />
+            </View>
+          );
+        })}
+
+      <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
+        正在出售使用权(
+        {userInfo.ownedNfts?.filter(nft => nft.state === 3).length})
+      </Text>
+      {userInfo.ownedNfts
+        ?.filter(nft => nft.state === 3)
+        .map(nft => {
+          return (
+            <View key={nft?.id} style={styles.item}>
+              <Image source={{ uri: nft?.url }} style={styles.photo} />
+            </View>
+          );
+        })}
+
+      <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
+        待出售(
+        {userInfo.ownedNfts?.filter(nft => nft.state === 1).length})
+      </Text>
+      {userInfo.ownedNfts
+        ?.filter(nft => nft.state === 1)
+        .map(nft => {
+          return (
+            <View key={nft?.id} style={styles.item}>
+              <Image source={{ uri: nft?.url }} style={styles.photo} />
+            </View>
+          );
+        })}
+
+      <Text style={{ textAlign: 'center', marginVertical: 10, fontSize: 15 }}>
+        待审核(
+        {userInfo.ownedNfts?.filter(nft => nft.state === 0).length})
+      </Text>
+      {userInfo.ownedNfts
+        ?.filter(nft => nft.state === 0)
+        .map(nft => {
+          return (
+            <View key={nft?.id} style={styles.item}>
+              <Image source={{ uri: nft?.url }} style={styles.photo} />
+            </View>
+          );
+        })}
     </ScrollView>
   );
 }
