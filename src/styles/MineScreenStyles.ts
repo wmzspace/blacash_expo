@@ -10,5 +10,12 @@ export const mineScreenStyles = StyleSheet.create({
         width: imageWidth,
         height: imageHeight,
         resizeMode: 'cover',
+        borderRadius: 16,
+    },
+    absoluteFillObject: {
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        resizeMode: 'stretch',
     }
 })

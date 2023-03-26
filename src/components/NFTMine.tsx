@@ -9,7 +9,13 @@ export interface IMinNFTProps {
 
 const NFTMine: React.FunctionComponent<IMinNFTProps> = ({ nft }) => {
   return (
-    <View style={{width: Dimensions.get('screen').width, justifyContent: 'center', alignItems: 'center' }}>
+    <View
+      style={{
+        width: Dimensions.get('screen').width,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 30,
+      }}>
       <Image source={{ uri: nft.url }} style={mineScreenStyles.img} />
       <Text>{nft.nftname}</Text>
     </View>
