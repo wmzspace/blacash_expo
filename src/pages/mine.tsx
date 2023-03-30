@@ -19,7 +19,7 @@ const listTitles = [
   '待出售', // 1
   '正在出售所有权', // 2
   '正在出售使用权', // 3
-  '所有作品',
+  '😎 所有作品',
 ];
 export default function MineScreen() {
   const [refreshing, setRefreshing] = React.useState(false);
@@ -85,7 +85,7 @@ export default function MineScreen() {
               nft => nft.state === listStatus || listStatus === 4,
             ).length
           })`}
-          titleStyle={{ textAlign: 'center' }}
+          titleStyle={{ textAlign: 'center', color: '#B58392', letterSpacing: 1, fontFamily: 'monospace' }}
           expanded={listExpand}
           onPress={() => {
             setListExpand(!listExpand);
