@@ -13,7 +13,7 @@ var fs = require('fs'); // 引入fs模块
 
 var app = express();
 // 引用
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 //设置跨域访问
 app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -264,7 +264,16 @@ app.get('/nftimg', function (req, res) {
     res.end(JSON.stringify(result));
   });
 });
-// });
+app.get('/message', function (req, res) {
+  connection.query('select * from message', function (err, result) {
+    if (err) {
+      console.log('[SELECT ERROR] - ', err.message);
+      return;
+    }
+
+    res.end(JSON.stringify(result));
+  });
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -276,14 +285,14 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({storage: storage});
+const upload = multer({ storage: storage });
 const imgBaseUrl = '..';
 
 app.post('/imgUrl', upload.single('files'), function (req, res, next) {
   // console.log('------------------------------');
   // console.log('start!!!');
   let files = req.file;
-  console.log('Uploading file:' + files);
+  console.log('Uploading file: ' + files.originalname);
   // let id = req.body.id;
   let relativeDir = files.path.replace(/\\/g, '/');
   let rootDir = 'https://wmzspace.space/blacash/';
@@ -297,6 +306,32 @@ app.post('/imgUrl', upload.single('files'), function (req, res, next) {
   // console.log(req);
 });
 
+// app.post('/upload', (req, res) => {
+//   let reqJSON;
+//   for (let key in JSON.parse(JSON.stringify(req.body))) {
+//     reqJSON = JSON.parse(key);
+//     break;
+//   }
+//   let addSqlParams = [
+//     reqJSON.url,
+//     reqJSON.nftName,
+//     reqJSON.nftDescription,
+//     reqJSON.owner,
+//     reqJSON.fee,
+//   ];
+//
+//   connection.query(
+//     'insert into appsubmit( url, nftname, nftdescription, owner, fee) values(?,?,?,?,?)',
+//     addSqlParams,
+//     function (err, result) {
+//       if (err) {
+//         console.log('[SELECT ERROR] - ', err.message);
+//         return;
+//       }
+//       res.end(JSON.stringify(reqJSON));
+//     },
+//   );
+// });
 app.post('/upload', (req, res) => {
   let reqJSON;
   for (let key in JSON.parse(JSON.stringify(req.body))) {
@@ -311,10 +346,8 @@ app.post('/upload', (req, res) => {
     reqJSON.fee,
   ];
 
-  // console.log(rootDir + relativeDir);
-  // let addSqlParams = [rootDir + relativeDir, 'temp', 'temp', 'temp', 1.0];
   connection.query(
-    'insert into appsubmit( url, nftname, nftdescription, owner, fee) values(?,?,?,?,?)',
+    'insert into nftimg( url, nftname, nftdescription, owner, price) values(?,?,?,?,?)',
     addSqlParams,
     function (err, result) {
       if (err) {
@@ -322,6 +355,20 @@ app.post('/upload', (req, res) => {
         return;
       }
       res.end(JSON.stringify(reqJSON));
+    },
+  );
+
+  connection.query(
+    'insert into message( address, time, content) values(?,?,?)',
+    [
+      reqJSON.address,
+      new Date(Date.now()),
+      `作品《${reqJSON.nftName}》正在审核中，审核成功后将自动上链`,
+    ],
+    function (err, result) {
+      if (err) {
+        console.log('[SELECT ERROR] - ', err.message);
+      }
     },
   );
 });

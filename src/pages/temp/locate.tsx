@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Platform, Text, View, StyleSheet} from 'react-native';
 
 import * as Location from 'expo-location';
-import styles from '../../styles';
+import styles from '../../styles/SplashScreenStyle';
 
 export default function App() {
   const [location, setLocation] = useState(null);

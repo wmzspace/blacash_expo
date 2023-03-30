@@ -39,6 +39,16 @@
     },
     "updates": {
       "url": "https://u.expo.dev/db5fe3e7-22b5-4ade-8267-b16280ad1bec"
-    }
+    },
+    "plugins": [
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
+          "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ]
   }
 }

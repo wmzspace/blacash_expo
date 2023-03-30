@@ -1,8 +1,8 @@
-# Blacash ÏîÄ¿
-## ÏîÄ¿½éÉÜ
-·şÎñÍâ°ü´´ĞÂ´´Òµ´óÈüÏîÄ¿--Blacash
-## ÏîÄ¿½á¹¹
-### ÓïÑÔ/¿ò¼Ü
+# Blacash é¡¹ç›®
+## é¡¹ç›®ä»‹ç»
+æœåŠ¡å¤–åŒ…åˆ›æ–°åˆ›ä¸šå¤§èµ›é¡¹ç›®--Blacash
+## é¡¹ç›®ç»“æ„
+### è¯­è¨€/æ¡†æ¶
 
 * Javascript
 * typescript
@@ -12,38 +12,43 @@
 * MySQL
 * Ajax
 * Nodejs
-### ×é¼ş¿â/ÑùÊ½¿â
-* Native Wind (ÑùÊ½)
+### ç»„ä»¶åº“/æ ·å¼åº“
+* Native Wind (æ ·å¼)
 
   https://www.nativewind.dev/
-* React Native paper (×é¼ş)
+* React Native paper (ç»„ä»¶)
 
   https://callstack.github.io/react-native-paper/docs/guides/getting-started/
-* React Native Reanimated (¶¯»­)
+* React Native Reanimated (åŠ¨ç”»)
 
   https://docs.swmansion.com/react-native-reanimated/docs/
-* Expo (¹¦ÄÜ)
+* Expo (åŠŸèƒ½)
 
   https://docs.expo.dev/
-### Ò³ÃæÎÄ¼ş (pagesÄ¿Â¼)
+### é¡µé¢æ–‡ä»¶ (pagesç›®å½•)
 
-* Ê×Ò³: home.tsx
+* é¦–é¡µ: home.tsx
 
-[//]: # (* ×¢²áÒ³: signup.tsx)
+[//]: # (* æ³¨å†Œé¡µ: signup.tsx)
 
-[//]: # (* µÇÂ¼Ò³: login.tsx)
+[//]: # (* ç™»å½•é¡µ: login.tsx)
 
 
-### ÑùÊ½ÎÄ¼ş
+### æ ·å¼æ–‡ä»¶
 
-* È«¾ÖÑùÊ½: styles.js
+* å…¨å±€æ ·å¼: styles.js
 
-### ÅäÖÃÒ³
+### é…ç½®é¡µ
 
 * App.tsx
 
-### ºó¶ËÎÄ¼ş (Express)
+### åç«¯æ–‡ä»¶ (Express)
 
 * serverTemp.js
+
+## å¤‡æ³¨
+### EAS Update
+yarn global add eas-cli
+eas update --branch åˆ†æ”¯å --message "æäº¤ä¿¡æ¯"
 
 

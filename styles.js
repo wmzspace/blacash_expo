@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet, NativeModules} from 'react-native';
+import { Dimensions, StyleSheet, NativeModules } from 'react-native';
 let deviceHeight =
   Dimensions.get('window').height / Dimensions.get('window').width > 1.8
     ? Dimensions.get('window').height + NativeModules.StatusBarManager.HEIGHT
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     marginVertical: 23,
     // paddingVertical: 10,
     // marginBottom: 23,
-    borderRadius: 10,
+    borderRadius: 12,
   },
   button: {
     alignItems: 'center',
@@ -77,12 +77,12 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   lightTheme: {
-    backgroundColor: '#fcfcfc',
-    color: 'black',
+    backgroundColor: '#7D5260',
+    color: '#FFFFFF',
   },
   darkTheme: {
-    backgroundColor: '#181818',
-    color: '#fcfcfc',
+    backgroundColor: '#EFB8C8',
+    color: '#492532',
   },
 });
 

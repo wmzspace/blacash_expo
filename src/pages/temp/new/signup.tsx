@@ -118,44 +118,44 @@ export default function SignupScreen({navigation}: Props) {
     Geolocation.getCurrentPosition(pos => {
       console.log(pos);
     });
-    // Geolocation.getCurrentPosition(
-    //   //Will give you the current location
-    //   position => {
-    //     //getting the Longitude from the location json
-    //     const currentLongitude_ = JSON.stringify(position.coords.longitude);
-    //
-    //     //getting the Latitude from the location json
-    //     const currentLatitude_ = JSON.stringify(position.coords.latitude);
-    //
-    //     setLocationStatus('点击左侧"位置"获取');
-    //
-    //     //Setting Longitude state
-    //     setCurrentLongitude(currentLongitude_);
-    //
-    //     //Setting Longitude state
-    //     setCurrentLatitude(currentLatitude_);
-    //     // console.log(`${currentLongitude},${currentLatitude}`)
-    //     geocoder(currentLongitude_, currentLatitude_);
-    //   },
-    //   error => {
-    //     if (error.message === 'No location provider available.') {
-    //       setLocationStatus('点击左侧"位置"刷新)');
-    //       Alert.alert('定位失败', '请检查GPS是否开启');
-    //     } else if (error.message === 'Location permission was not granted.') {
-    //       setLocationStatus('点击左侧"位置"刷新)');
-    //       Alert.alert('定位失败', '用户拒绝定位权限, 请尝试在设置中开启权限');
-    //     } else {
-    //       setLocationStatus(error.message);
-    //       Alert.alert('定位失败', error.message);
-    //     }
-    //     return 0;
-    //   },
-    //   {
-    //     enableHighAccuracy: true,
-    //     timeout: 30000,
-    //     maximumAge: 1000,
-    //   },
-    // );
+    Geolocation.getCurrentPosition(
+      //Will give you the current location
+      position => {
+        //getting the Longitude from the location json
+        const currentLongitude_ = JSON.stringify(position.coords.longitude);
+    
+        //getting the Latitude from the location json
+        const currentLatitude_ = JSON.stringify(position.coords.latitude);
+    
+        setLocationStatus('点击左侧"位置"获取');
+    
+        //Setting Longitude state
+        setCurrentLongitude(currentLongitude_);
+    
+        //Setting Longitude state
+        setCurrentLatitude(currentLatitude_);
+        // console.log(`${currentLongitude},${currentLatitude}`)
+        geocoder(currentLongitude_, currentLatitude_);
+      },
+      error => {
+        if (error.message === 'No location provider available.') {
+          setLocationStatus('点击左侧"位置"刷新)');
+          Alert.alert('定位失败', '请检查GPS是否开启');
+        } else if (error.message === 'Location permission was not granted.') {
+          setLocationStatus('点击左侧"位置"刷新)');
+          Alert.alert('定位失败', '用户拒绝定位权限, 请尝试在设置中开启权限');
+        } else {
+          setLocationStatus(error.message);
+          Alert.alert('定位失败', error.message);
+        }
+        return 0;
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 30000,
+        maximumAge: 1000,
+      },
+    );
   };
 
   // const [formatted_address, setFormattedAddress] = React.useState('');
