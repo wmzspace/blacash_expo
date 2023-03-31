@@ -6,10 +6,6 @@ import { SplashScreenStyles } from '../styles/SplashScreenStyle';
 import Animated, { BounceIn, FadeInUp } from 'react-native-reanimated';
 import { RootStackScreenProps } from '../types';
 
-// export interface ISplashScreenProps {
-//   navigation: any;
-// }
-
 type Props = RootStackScreenProps<'SplashScreen'>;
 
 const AnimatedView = Animated.createAnimatedComponent(View);

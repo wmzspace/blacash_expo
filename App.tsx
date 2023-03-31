@@ -85,16 +85,6 @@ export default function App() {
           <PaperProvider theme={theme}>
             <NavigationContainer theme={theme}>
               {loginState ? <RootStackScreenHasLogin /> : <RootStackScreen />}
-              {/*<Stack.Navigator initialRouteName="SplashScreen">*/}
-              {/*  {routes.map((route: any, i: number) => (*/}
-              {/*    <Stack.Screen*/}
-              {/*      key={i}*/}
-              {/*      name={route.name}*/}
-              {/*      component={route.component}*/}
-              {/*      options={route.options}*/}
-              {/*    />*/}
-              {/*  ))}*/}
-              {/*</Stack.Navigator>*/}
             </NavigationContainer>
           </PaperProvider>
         </PreferencesContext.Provider>

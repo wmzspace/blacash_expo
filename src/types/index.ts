@@ -12,10 +12,6 @@ export type RootStackParamList = {
   SplashScreen: undefined;
   LoginScreen: undefined;
   SignupScreen: undefined;
-  // Main: any;
-  // Main: {
-  //   email: string;
-  // };
   Main: NavigatorScreenParams<MainBottomTabParamList>;
   NotFound: undefined;
 };

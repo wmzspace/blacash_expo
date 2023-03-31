@@ -62,5 +62,3 @@ export const RootStackScreenHasLogin: React.FunctionComponent = () => {
     </RootStack.Navigator>
   );
 };
-
-// export default RootStackScreen;
