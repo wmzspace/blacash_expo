@@ -22,6 +22,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Modal, Portal, Button } from 'react-native-paper';
 import { FormData, RootStackScreenProps } from '../types';
+import { serverIPP } from '../values/strings';
 
 // export interface ISignUpScreenProps {
 //   navigation: any;
@@ -176,14 +177,14 @@ const SignupScreen: React.FunctionComponent<Props> = ({ navigation }) => {
           });
         } else {
           Alert.alert('请求失败', 'error', [
-            {text: '确定', onPress: () => console.log('OK Pressed!')},
+            { text: '确定', onPress: () => console.log('OK Pressed!') },
           ]);
         }
       })
       .catch(err => {
         console.log('err', err);
         Alert.alert('请求失败', err, [
-          {text: '确定', onPress: () => console.log('OK Pressed!')},
+          { text: '确定', onPress: () => console.log('OK Pressed!') },
         ]);
       });
   };
@@ -241,6 +242,61 @@ const SignupScreen: React.FunctionComponent<Props> = ({ navigation }) => {
       ...formData,
       secureTextEntry: !formData.secureTextEntry,
     });
+  };
+
+  const signupAjax = () => {
+    fetch('http://' + serverIPP + '/signup', {
+      //不能直接使用 wmzspace.space域名, 因为 域名开启了https防窜站
+      method: 'POST',
+      mode: 'cors', //之前是no-cors
+      //same-origin - 同源请求，跨域会报error
+      //no-cors - 默认，可以请求其它域的资源，不能访问response内的属性
+      //cros - 允许跨域，可以获取第三方数据，必要条件是访问的服务允许跨域访问
+      //navigate - 支持导航的模式。该navigate值仅用于HTML导航。导航请求仅在文档之间导航时创建。
+      // body: `name=${userInfo.userName}&password=${userInfo.password}&address=${address}&email=${email}&location=${location}&province=${province}&city=${city}&district=${district}&longitude=${currentLongitude}&latitude=${currentLatitude}`, // 上传到后端的数据
+      body: `name=${formData.username}&password=${formData.password}&address=${formData.walletAddress}&email=${formData.username}&location=${location}&province=${province}&city=${city}&district=${district}&longitude=${currentLongitude}&latitude=${currentLatitude}`, // 上传到后端的数据
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        // 'Content-Type': 'multipart/form-data;charset=utf-8', //非文本内容
+        // 'Content-Type': 'multipart/form-data;boundary=------FormBoundary15e896376d1'
+      },
+    })
+      .then(res => {
+        if (res.ok) {
+          //数据解析方式
+          res
+            //.arrayBuffer() // ArrayBuffer/ArrayBufferView
+            // .json() // Json file, need JSON.stringify(...)
+            .text() // String
+            //.blob()        // Blob/File
+            //.formData()    // FormData
+            .then(responseData => {
+              //从后端返回的数据(res.end())
+              Alert.alert('提示', responseData, [
+                {
+                  text: '确定',
+                  onPress: () => {
+                    console.log('OK Pressed!');
+                    if (responseData.substring(0, 4) === '注册成功') {
+                      navigation.navigate('SplashScreen');
+                    }
+                  },
+                },
+              ]);
+            });
+        } else {
+          Alert.alert('请求失败', 'error', [
+            { text: '确定', onPress: () => console.log('OK Pressed!') },
+          ]);
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+        Alert.alert('请求失败', err, [
+          { text: '确定', onPress: () => console.log('OK Pressed!') },
+        ]);
+      });
   };
 
   return (
@@ -315,7 +371,10 @@ const SignupScreen: React.FunctionComponent<Props> = ({ navigation }) => {
           ) : null}
         </View>
         <View style={AuthScreenStyles.button}>
-          <TouchableOpacity style={AuthScreenStyles.signIn} onPress={showModal}>
+          {/*<TouchableOpacity style={AuthScreenStyles.signIn} onPress={showModal}>*/}
+          <TouchableOpacity
+            style={AuthScreenStyles.signIn}
+            onPress={signupAjax}>
             <LinearGradient
               colors={['#625B71', '#7D5260']}
               style={AuthScreenStyles.signIn}>
