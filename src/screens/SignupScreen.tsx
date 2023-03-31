@@ -42,8 +42,8 @@ const SignupScreen: React.FunctionComponent<Props> = ({ navigation }) => {
     checkEmailInputChange: false,
     checkWalletInputChange: false,
     secureTextEntry: true,
-    isValidUser: true,
-    isValidPassword: true,
+    isValidUser: false,
+    isValidPassword: false,
   });
 
   const handleEmailInputChange = (val: any) => {
@@ -374,9 +374,19 @@ const SignupScreen: React.FunctionComponent<Props> = ({ navigation }) => {
           {/*<TouchableOpacity style={AuthScreenStyles.signIn} onPress={showModal}>*/}
           <TouchableOpacity
             style={AuthScreenStyles.signIn}
-            onPress={signupAjax}>
+            onPress={() => {
+              if (formData.isValidUser && formData.isValidPassword) {
+                signupAjax();
+              } else {
+              }
+            }}
+            disabled={!(formData.isValidPassword && formData.isValidUser)}>
             <LinearGradient
-              colors={['#625B71', '#7D5260']}
+              colors={
+                formData.isValidPassword && formData.isValidUser
+                  ? ['#625B71', '#7D5260']
+                  : ['lightgray', 'lightgray']
+              }
               style={AuthScreenStyles.signIn}>
               <Text style={{ ...AuthScreenStyles.textSign, color: '#fff' }}>
                 注册
